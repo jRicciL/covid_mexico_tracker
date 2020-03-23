@@ -1,0 +1,57 @@
+
+
+.info_main_row{
+  margin: 0.5rem 3rem;
+  padding: 2px;
+}
+
+.info_row {
+  border-radius: 5px;
+}
+
+.info_column_names{
+  text-align: right;
+}
+
+.info_column_names h4{
+  font-weight: normal;
+}
+
+.info_row_left{
+  text-align: right;
+}
+
+.info_row_right{
+  text-align: left;
+}
+
+h3{
+  padding: 0;
+  margin: 0.5em 0;
+}
+
+.icon{
+  color: white;
+  font-size: 2em;
+  margin: 0.3em 0;
+}
+
+.positive_bg_color {
+  background-color: #E7574A;
+}
+
+.suspect_bg_color {
+  background-color: #42A2A5;
+}
+
+.negative_bg_color {
+  background-color: #9EC67E;
+}
+
+.recovered_bg_color{
+  background-color: #f1935c;
+}
+
+.death_bg_color {
+  background-color: #758184;
+}
