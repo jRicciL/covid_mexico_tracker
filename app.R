@@ -262,7 +262,7 @@ ui <- fluidPage(
                        ),
                        
                        
-                       class = "col-md-4"),
+                       class = "col-lg-4"),
                 # Mexcio Map
                 column(12, 
                     div(h3(paste0('Número de casos confirmados por Estado'),
@@ -273,7 +273,7 @@ ui <- fluidPage(
                         outputId = 'mapMx',
                         height = "85%"
                         ),
-                    class = "col-md-8",
+                    class = "col-lg-8",
                     style = "height: 550px"
                     ),
             ),
