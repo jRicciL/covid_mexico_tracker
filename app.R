@@ -10,7 +10,7 @@ data_list <- readRDS('data/data.rds')
 # PREPROCESSING DATA:
 # Preprocessing main values: Positive, Recovered, Local, Imported and Deaths
 df_total_reps <- raw_data[, c('Fecha', 'Pos_rep', 'Susp_rep', 
-                              'Neg_rep', 'Recovered', 'Deceased')]
+                              'Neg_rep', 'Recovered', 'Deceased', 'Tested_tot')]
 
 # STATES
 ord_state_names <- data_list$ord_state_names
@@ -49,7 +49,8 @@ conf_ <- c(#"zoomIn2d", "zoomOut2d", #"select2d",
 font_plotly <- list(
     size = 14
 )
-ax_lp <- list(marging = list(pad = 0),
+ax_lp <- list(marging = list(pad = 0), linecolor = toRGB('black'), 
+              linewidth = 3, showline = T,
               title = '<b>Fecha</b>')
 yax_lp <- ax_lp
 yax_lp[['title']] <- '<b>Número de Casos</b>'
@@ -64,32 +65,56 @@ ui <- fluidPage(
     
     sidebarLayout(
         sidebarPanel(
-            h1('COVID-Tracker'),
-            span('Última Actualización: '),
-            #span(textOutput('text_date')),
+            HTML('<h1>COVID-19:<span style="color: #1A666D;"> MxTracker</span></h1>'),
+            p(span('Última actualización:'), span(textOutput('text_update', inline = TRUE))),
             
             hr(),
             
             fluidRow(
-                h3('Fecha:'),
-                dateInput(
-                    inputId = 'pickDate',
-                    label = 'Selecciona la fecha:',
-                    value = last_date,
-                    format = "dd/mm/yy",
-                    language = 'es'
-                ),
-                htmlOutput('date_warning'),
+                column(12,
+                    h3('Fecha'),
+                    dateInput(
+                        inputId = 'pickDate',
+                        label = 'Selecciona la fecha:',
+                        value = last_date,
+                        format = "dd/mm/yy",
+                        language = 'es'
+                ), 
+                class = 'col-md-6'),
+                column(12,
+                       htmlOutput('date_warning'),
+                class = 'col-md-6')
             ),
             
             fluidRow(
-                h3('Usabilidad:'),
+                column(12,
+                       h3('Línea de Tiempo'),
+                       radioButtons("scale_log", 
+                          label = p("Selecciona la escala de visualización:"), 
+                          choices = list("Datos crudos" = 'raw', 
+                                         "Escala Logarítmica" = 'log'),
+                          inline = TRUE,
+                          selected = 'raw'),
+                       
+                       checkboxGroupInput("case_categories", 
+                            label = p("Datos complementarios:"), 
+                            choices = list("Casos Sospechosos" = 'Susp_rep', 
+                                           "Casos Negativos" = 'Neg_rep',
+                                           "Número de Pruebas Realizadas" = 'Tested_tot'),
+                            selected = NULL),
+                )
+            ),
+
+            
+            hr(),
+            
+            fluidRow(
                 div(
                     HTML(
 '<div class="alert alert-success" role="alert">
   <h4 class="alert-heading">Usabilidad</h4>
   <hr>
-  <ul>
+  <ul class="small">
     <li>Selecciona la fecha de interés.</li>
     <li>Da click en el mapa para  más información sobre los casos de cada estado.</li>
     <li>Pasa el cursor sobre algún punto de interés en la línea de tiempo para más información al respecto.</li>
@@ -97,8 +122,8 @@ ui <- fluidPage(
   </ul>
 </div>')
                 )
-            ),
-            
+            ), # Ends Raw HTML
+            HTML("<p style = 'text-align: right;'><a href='https://github.com/jRicciL' target='_blank'>J. Ricci-López (2020) &copy;</a><p/>"),
             
             width = 3,
             style = 'padding: 3rem'),
@@ -218,6 +243,23 @@ ui <- fluidPage(
                            class = 'info_main_row'
                        ),
                        
+                       fluidRow(
+                           column(6,
+                                  h4('Número de pruebas realizadas:'), 
+                                  class = "info_column_names"),
+                           column(6,
+                                  fluidRow(
+                                      column(8,
+                                             h3(textOutput('text_tested')),
+                                             class = "info_row_right"),
+                                      column(4,
+                                             '',
+                                             class = "info_row_right"),
+                                      class='info_row')
+                           ),
+                           class = 'info_main_row'
+                       ),
+                       
                        
                        class = "col-md-4"),
                 # Mexcio Map
@@ -238,7 +280,9 @@ ui <- fluidPage(
             # Time Series
             fluidRow(
                 column(12,
-                       div(h3('Linea de Tiempo: Número de casos por día',
+                       div(h3('Linea de Tiempo: ',
+                              span('Número de casos por día',
+                                   style = 'font-weight: normal;'),
                               class = 'text-center'),
                            style = 'margin-bottom: -35px; z-index: 1000'),
                        plotlyOutput(
@@ -246,13 +290,12 @@ ui <- fluidPage(
                 )
             ),
             width = 9)
-    )
-
+    ),
 
 )
 
 # Define server logic required to draw a histogram
-server <- function(input, output) {
+server <- function(input, output, session) {
     #****** OBSERVERS ****
     # DATES
     observe({
@@ -260,6 +303,9 @@ server <- function(input, output) {
         formated_date <- format(as.Date(selected_date),
                                 format = "%d/%B/%Y")
         output$text_date <- renderText({formated_date})
+        # Last update date
+        output$text_update <- renderText({
+            paste0(formated_date)})
     })
     # NUM TOTAL CASES
     total_cases_date <- reactive({
@@ -273,16 +319,26 @@ server <- function(input, output) {
         n_neg <- all_reps['Neg_rep'][[1]]
         n_recov <- all_reps['Recovered'][[1]]
         n_dead <- all_reps['Deceased'][[1]]
+        n_tested <- all_reps['Tested_tot'][[1]]
         
         output$text_pos <- renderText({n_pos})
         output$text_susp <- renderText({n_susp})
         output$text_neg <- renderText({n_neg})
         output$text_recov <- renderText({n_recov})
         output$text_deaths <- renderText({n_dead})
+        output$text_tested <- renderText({n_tested})
     })
     
     
     #****** REACTIVES ****
+    df_line_plot <- reactive({
+        df_ <- df_total_reps
+        # Filter values:
+        categories <- c(c('Fecha', 'Pos_rep'), input$case_categories)
+        df_ <- df_total_reps[, categories]
+        return(df_)
+    })
+    
     validate_date <- reactive({
         # If not valid, return the actual date
         selected_date <- input$pickDate
@@ -342,42 +398,80 @@ server <- function(input, output) {
             )
     })
     
+    
+    observeEvent(input$scale_log, {
+        yax_lp[['type']] <- input$scale_log
+        plotlyProxy("timePlot", session) %>%
+            plotlyProxyInvoke("relayout", 
+                              list(yaxis= yax_lp))
+    })
+    
+    #**** Linear Plot ******
     output$timePlot <- renderPlotly({
         fig <- plot_ly(type = 'scatter', mode = 'markers+lines')
-        df_ <- df_total_reps
+        df_ <- df_line_plot()
+        max_y_value = apply(df_, 2, max, na.rm = TRUE)
+
         # Add the Positive Cases
         fig <- add_trace(fig, x = df_$Fecha,
                          y = df_[['Pos_rep']],
-                         text = ~paste0(
+                         marker = list(size = 12,
+                                       color = 'rgb(231, 87, 74)'),
+                         line = list(color = 'rgb(231, 87, 74)',
+                                     width = 5),
+                         text = paste0(
                              '<b>Positivos</b>',
-                             '<br><b>Casos:</b> ', df_[[column]],
+                             '<br><b>Casos:</b> ', df_[['Pos_rep']],
                              '<br><b>Fecha:</b> ', df_$Fecha),
-                         name = column,
-                         hovertemplate = paste('%{text}'))
+                         name = 'Casos Positivos',
+                         hovertemplate = paste('%{text}')) %>%
+        add_segments(x = '2020-02-28', xend = '2020-02-28', 
+              y = 0, yend = max_y_value, 
+              showlegend = FALSE, opacity = 0.5,
+              line = list(color = 'black', dash = 'dash', 
+                          linewidth = 3)) %>%
+        add_text(x = '2020-02-28',  
+                 y = 0,
+                 textposition = "up right",
+                 text = ' Primer caso<br> positivo<br> reportado<br><br><br><br><br>',
+                 showlegend = FALSE)
+        
         # Filter per value
-        for (column in columnas_df) {
+        for (column in input$case_categories) {
             if (column == 'Fecha' | column == 'Pos_rep') {
                 next
             }
-            fig <- add_trace(fig, x = df_$Fecha,
+            # Get the color
+            color_ <- switch (column,
+                'Susp_rep' = 'rgb(80,147,148)',
+                'Neg_rep' = 'rgb(81,157,72)',
+                'Tested_tot' = 'rgb(195,148,202)'
+            )
+            fig <- fig %>% add_trace(x = df_$Fecha,
                              y = df_[[column]],
-                             text = ~paste0(
+                             text = paste0(
                                  '<b>', column,'</b>',
                                  '<br><b>Casos:</b> ', df_[[column]],
                                  '<br><b>Fecha:</b> ', df_$Fecha),
                              name = column,
-                             line = list(color = '#f64a3a', 
-                                         dash = 'dot', linewidth = 6),
-                             hovertemplate = paste('%{text}')) %>% 
-                layout(xaxis = ax_lp, yaxis = yax_lp, 
-                       paper_bgcolor = 'rgba(0,0,0,0)', 
-                       font = font_plotly,
-                       legend = list(title = list(text = '<b>Categorías:</b>'),
-                                     x = 0.05, y =0.95)) %>%
-                config(modeBarButtonsToRemove = conf_, displaylogo = FALSE,
-                       displayModeBar = F)
+                             marker = list(size = 10,
+                                           symbol = 'diamond',
+                                           color = color_),
+                             line = list(color = color_,
+                                         dash = 'dash',
+                                         width = 2),
+                             hovertemplate = paste('%{text}')) 
         }
-        fig
+        yax_lp[['type']] <- input$scale_log
+        fig <- fig %>%
+            layout(xaxis = ax_lp, yaxis = yax_lp, 
+                   paper_bgcolor = 'rgba(0,0,0,0)', 
+                   font = font_plotly,
+                   legend = list(title = list(text = '<b>Categorías:</b>'),
+                                 x = 0.05, y =0.95)) %>%
+            config(modeBarButtonsToRemove = conf_, displaylogo = FALSE,
+                   displayModeBar = F)
+
     })
 }
 
