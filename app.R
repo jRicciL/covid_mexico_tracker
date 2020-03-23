@@ -1,5 +1,4 @@
 library(shiny)
-library(shinyjs)
 library(shinythemes)
 library(leaflet)
 
@@ -123,7 +122,9 @@ ui <- fluidPage(
 </div>')
                 )
             ), # Ends Raw HTML
-            HTML("<p style = 'text-align: right;'><a href='https://github.com/jRicciL' target='_blank'>J. Ricci-López (2020) &copy;</a><p/>"),
+            HTML("<p style = 'text-align: right;'><a href='https://github.com/jRicciL' target='_blank'>J. Ricci-López (2020) &copy;</a><p/>
+                 <p style = 'text-align: right;'>Fuente de los datos: <a href='https://github.com/carranco-sga/Mexico-COVID-19' target='_blank'>carranco-sga</a><p/>
+                 "),
             
             width = 3,
             style = 'padding: 3rem'),
