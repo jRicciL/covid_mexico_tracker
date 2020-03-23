@@ -48,7 +48,7 @@ conf_ <- c(#"zoomIn2d", "zoomOut2d", #"select2d",
 font_plotly <- list(
     size = 14
 )
-ax_lp <- list(marging = list(pad = 0), linecolor = toRGB('black'), 
+ax_lp <- list(marging = list(pad = 0), linecolor = 'rgb(0,0,0)', 
               linewidth = 3, showline = T,
               title = '<b>Fecha</b>')
 yax_lp <- ax_lp
@@ -122,8 +122,9 @@ ui <- fluidPage(
 </div>')
                 )
             ), # Ends Raw HTML
-            HTML("<p style = 'text-align: right;'><a href='https://github.com/jRicciL' target='_blank'>J. Ricci-López (2020) &copy;</a><p/>
-                 <p style = 'text-align: right;'>Fuente de los datos: <a href='https://github.com/carranco-sga/Mexico-COVID-19' target='_blank'>carranco-sga</a><p/>
+            HTML("<p style = 'text-align: right;'>Fuente de los datos: <a href='https://github.com/carranco-sga/Mexico-COVID-19' target='_blank'>carranco-sga</a><p/>
+            <p style = 'text-align: right;'><a href='https://github.com/jRicciL' target='_blank'>J. Ricci-López (2020) &copy;</a><p/>
+                 
                  "),
             
             width = 3,
@@ -449,13 +450,18 @@ server <- function(input, output, session) {
                 'Neg_rep' = 'rgb(81,157,72)',
                 'Tested_tot' = 'rgb(195,148,202)'
             )
+            name_ <- switch (column,
+                 'Susp_rep' = 'Sospechosos',
+                 'Neg_rep' = 'Negativos',
+                 'Tested_tot' = 'Núm. Pruebas Realizadas'
+            )
             fig <- fig %>% add_trace(x = df_$Fecha,
                              y = df_[[column]],
                              text = paste0(
                                  '<b>', column,'</b>',
                                  '<br><b>Casos:</b> ', df_[[column]],
                                  '<br><b>Fecha:</b> ', df_$Fecha),
-                             name = column,
+                             name = name_,
                              marker = list(size = 10,
                                            symbol = 'diamond',
                                            color = color_),
