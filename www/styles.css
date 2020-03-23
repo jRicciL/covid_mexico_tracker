@@ -1,8 +1,7 @@
 
-
 .info_main_row{
   margin: 0.5rem 3rem;
-  padding: 2px;
+  padding: 0px;
 }
 
 .info_row {
@@ -25,10 +24,6 @@
   text-align: left;
 }
 
-h3{
-  padding: 0;
-  margin: 0.5em 0;
-}
 
 .icon{
   color: white;
@@ -36,12 +31,16 @@ h3{
   margin: 0.3em 0;
 }
 
+.positive_color {
+  color: #E7574A;
+}
+
 .positive_bg_color {
-  background-color: #E7574A;
+  background-color: #ED6559;
 }
 
 .suspect_bg_color {
-  background-color: #42A2A5;
+  background-color: #90BEBF;
 }
 
 .negative_bg_color {
@@ -53,5 +52,5 @@ h3{
 }
 
 .death_bg_color {
-  background-color: #758184;
+  background-color: #8C989B;
 }
