@@ -1,6 +1,6 @@
 
 .info_main_row{
-  margin: 0.5rem 3rem;
+  margin: 1.1rem 3rem;
   padding: 0px;
 }
 
@@ -8,21 +8,21 @@
   border-radius: 5px;
 }
 
-.info_row h3 {
+.info_row_right > h3 {
   margin: 0;
-  padding-top: 12px;
+  padding-top: 10px;
 }
 
-.info_row h4 {
+.info_row_right > h4 {
   margin: 0;
-  padding-top: 5px;
+  padding-top: 2px;
 }
 
 .info_column_names{
   text-align: right;
 }
 
-.info_column_names h4{
+.info_column_names > h4{
   font-weight: normal;
   margin-top: 2px;
 }
