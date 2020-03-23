@@ -253,9 +253,10 @@ ui <- fluidPage(
                                              h3(textOutput('text_tested')),
                                              class = "info_row_right"),
                                       column(4,
-                                             '',
+                                             icon('fas fa-vial', 
+                                                  class = 'icon', lib = "font-awesome"),
                                              class = "info_row_right"),
-                                      class='info_row')
+                                      class='info_row tested_bg_color')
                            ),
                            class = 'info_main_row'
                        ),
