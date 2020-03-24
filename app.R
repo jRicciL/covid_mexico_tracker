@@ -1,6 +1,11 @@
 library(shiny)
 library(shinythemes)
+library(plotly)
 library(leaflet)
+library(shinycssloaders)
+
+# Spinner Options
+options(spinner.color="#FF7467", spinner.color.background="#ffffff", spinner.size=1.5)
 
 # COVID data
 raw_data <- read.csv('https://raw.githubusercontent.com/carranco-sga/Mexico-COVID-19/master/Mexico_COVID19.csv', stringsAsFactors =  FALSE)
@@ -24,6 +29,8 @@ df_pos_states <- df_pos_states[ , order(names(df_pos_states))]
 first_date <- head(raw_data$Fecha, n = 1)[1]
 # Last date
 last_date <- tail(raw_data$Fecha, n = 1)[1]
+last_date_formated <- format(as.Date(last_date), format = "%d de %b del %Y")
+
 # Format date to int func
 date_to_int <- function(text_date){
     date_int <- as.integer(format(as.Date(text_date),
@@ -64,8 +71,9 @@ ui <- fluidPage(
     
     sidebarLayout(
         sidebarPanel(
-            HTML('<h1>COVID-19:<span style="color: #1A666D;"> MxTracker</span></h1>'),
-            p(span('Última actualización:'), span(textOutput('text_update', inline = TRUE))),
+            HTML('<h1><span class="red_color">COVID-19:</span><span class="yellow_color"> MxTracker</span></h1>'),
+            p(span('Última actualización:', style = 'font-weight: bold;'), span(last_date_formated)),
+            HTML("<p style = 'text-align: left;'><b>Fuente:</b> <a href='https://www.gob.mx/salud/documentos/informacion-internacional-y-nacional-sobre-nuevo-coronavirus-2019-ncov' target='_blank'>Secretaría de Salud, Mx.</a>, a través de <a href='https://github.com/carranco-sga/Mexico-COVID-19' target='_blank'>carranco-sga</a>.<p/>"),
             
             hr(),
             
@@ -108,22 +116,25 @@ ui <- fluidPage(
             hr(),
             
             fluidRow(
-                div(
-                    HTML(
-'<div class="alert alert-success" role="alert">
+ HTML(
+'<div class="alert fade_white_color" role="alert">
   <h4 class="alert-heading">Usabilidad</h4>
-  <hr>
-  <ul class="small">
+  <ul class="small fade_white_color">
     <li>Selecciona la fecha de interés.</li>
-    <li>Da click en el mapa para  más información sobre los casos de cada estado.</li>
-    <li>Pasa el cursor sobre algún punto de interés en la línea de tiempo para más información al respecto.</li>
-<li>Da doble click sobre la <b>línea de tiempo</b> para volver a la <b>visualización inicial</b>.</li>
+    <li>Da click en el mapa para más información de cada estado.</li>
+    <li>Pasa el cursor sobre algún punto de interés en la <b>línea de tiempo</b> para más información al respecto. Vuelve a la <b>visualización inicial</b> con doble click sobre la gráfica.</li>
   </ul>
+</div>'),
+
+HTML(
+    '<div class="alert alert-danger" role="alert">
+  <h4 class="alert-heading">Disclaimer</h4>
+  <p style="color: #444">Los datos de esta aplicación son obtenidos a partir de los Comunicados Técnicos diários de la <a href="https://www.gob.mx/salud/documentos/informacion-internacional-y-nacional-sobre-nuevo-coronavirus-2019-ncov" target="_blank">Secretaría de Salud, Mx.</a>. No obstante, siempre cabe la posibilidad de problemas de actualización o errores en el código de esta aplicación, por lo cual recuerda siempre verificar con a la información oficial. Evitemos propagar información falsa.</p>  
 </div>')
-                )
+
             ), # Ends Raw HTML
-            HTML("<p style = 'text-align: right;'>Fuente de los datos: <a href='https://github.com/carranco-sga/Mexico-COVID-19' target='_blank'>carranco-sga</a><p/>
-            <p style = 'text-align: right;'><a href='https://github.com/jRicciL' target='_blank'>J. Ricci-López (2020) &copy;</a><p/>
+            HTML("
+            <p style = 'text-align: right;'>Author: <a href='https://github.com/jRicciL' target='_blank'>J. Ricci-López (2020) &copy;</a>, PhD student at <a href='https://www.cicese.edu.mx/' target='_blank'>CICESE</a>, Mx.<p/>
                  
                  "),
             
@@ -288,8 +299,8 @@ ui <- fluidPage(
                                    style = 'font-weight: normal;'),
                               class = 'text-center'),
                            style = 'margin-bottom: -35px; z-index: 1000'),
-                       plotlyOutput(
-                           outputId = 'timePlot')
+                       withSpinner(plotlyOutput(
+                           outputId = 'timePlot'))
                 )
             ),
             width = 9)
@@ -306,9 +317,6 @@ server <- function(input, output, session) {
         formated_date <- format(as.Date(selected_date),
                                 format = "%d/%B/%Y")
         output$text_date <- renderText({formated_date})
-        # Last update date
-        output$text_update <- renderText({
-            paste0(formated_date)})
     })
     # NUM TOTAL CASES
     total_cases_date <- reactive({
@@ -418,7 +426,7 @@ server <- function(input, output, session) {
         # Add the Positive Cases
         fig <- add_trace(fig, x = df_$Fecha,
                          y = df_[['Pos_rep']],
-                         marker = list(size = 12,
+                         marker = list(size = 14,
                                        color = 'rgb(231, 87, 74)'),
                          line = list(color = 'rgb(231, 87, 74)',
                                      width = 5),
@@ -458,7 +466,7 @@ server <- function(input, output, session) {
             fig <- fig %>% add_trace(x = df_$Fecha,
                              y = df_[[column]],
                              text = paste0(
-                                 '<b>', column,'</b>',
+                                 '<b>', name_,'</b>',
                                  '<br><b>Casos:</b> ', df_[[column]],
                                  '<br><b>Fecha:</b> ', df_$Fecha),
                              name = name_,
