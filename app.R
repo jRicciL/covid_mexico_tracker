@@ -73,69 +73,78 @@ ui <- fluidPage(
         sidebarPanel(
             HTML('<h1><span class="red_color">COVID-19:</span><span class="yellow_color"> MxTracker</span></h1>'),
             p(span('Última actualización:', style = 'font-weight: bold;'), span(last_date_formated)),
-            HTML("<p style = 'text-align: left;'><b>Fuente:</b> <a href='https://www.gob.mx/salud/documentos/informacion-internacional-y-nacional-sobre-nuevo-coronavirus-2019-ncov' target='_blank'>Secretaría de Salud, Mx.</a>, a través de <a href='https://github.com/carranco-sga/Mexico-COVID-19' target='_blank'>carranco-sga</a>.<p/>"),
+            HTML("<p style = 'text-align: left;'><b>Fuente:</b> <a href='https://www.gob.mx/salud/documentos/informacion-internacional-y-nacional-sobre-nuevo-coronavirus-2019-ncov' target='_blank'>SSalud, Mx.</a>, a través de <a href='https://github.com/carranco-sga/Mexico-COVID-19' target='_blank'>carranco-sga</a>.<p/>"),
             
             hr(),
             
             fluidRow(
                 column(12,
                     h3('Fecha'),
-                    dateInput(
-                        inputId = 'pickDate',
-                        label = 'Selecciona la fecha:',
-                        value = last_date,
-                        format = "dd/mm/yy",
-                        language = 'es'
+                    column(12,
+                           dateInput(
+                               inputId = 'pickDate',
+                               label = 'Selecciona la fecha:',
+                               value = last_date,
+                               format = "dd/mm/yy",
+                               language = 'es'
+                           ),
                 ), 
-                class = 'col-md-6'),
+                class = 'col-md-7'),
                 column(12,
                        htmlOutput('date_warning'),
-                class = 'col-md-6')
+                class = 'col-md-5')
             ),
             
             fluidRow(
                 column(12,
                        h3('Línea de Tiempo'),
-                       radioButtons("scale_log", 
-                          label = p("Selecciona la escala de visualización:"), 
-                          choices = list("Datos crudos" = 'raw', 
-                                         "Escala Logarítmica" = 'log'),
-                          inline = TRUE,
-                          selected = 'raw'),
-                       
-                       checkboxGroupInput("case_categories", 
-                            label = p("Datos complementarios:"), 
-                            choices = list("Casos Sospechosos" = 'Susp_rep', 
-                                           "Casos Negativos" = 'Neg_rep',
-                                           "Número de Pruebas Realizadas" = 'Tested_tot'),
-                            selected = NULL),
+                       column(12,
+                          radioButtons("scale_log", 
+                                       label = p("Selecciona la escala de visualización:"), 
+                                       choices = list("Datos crudos" = 'raw', 
+                                                      "Escala Logarítmica" = 'log'),
+                                       selected = 'raw'),
+                          class='col-md-6'
+                        ),
+                       column(12,
+                          checkboxGroupInput("case_categories", 
+                             label = p("Categorías complementárias:"), 
+                             choices = list("Casos Sospechosos" = 'Susp_rep', 
+                                            "Casos Negativos" = 'Neg_rep',
+                                            "Número de Pruebas Realizadas" = 'Tested_tot'),
+                             selected = NULL),
+                          class='col-md-6'
+                        ),                 
                 )
             ),
 
-            
             hr(),
             
             fluidRow(
  HTML(
-'<div class="alert fade_white_color" role="alert">
-  <h4 class="alert-heading">Usabilidad</h4>
-  <ul class="small fade_white_color">
+'
+<div class="col-sm-12">
+<h3 class="alert-heading" style="color: #FFC27E;">Usabilidad</h3>
+
+  <ul class="fade_white_color">
     <li>Selecciona la fecha de interés.</li>
     <li>Da click en el mapa para más información de cada estado.</li>
     <li>Pasa el cursor sobre algún punto de interés en la <b>línea de tiempo</b> para más información al respecto. Vuelve a la <b>visualización inicial</b> con doble click sobre la gráfica.</li>
   </ul>
-</div>'),
-
-HTML(
-    '<div class="alert alert-danger" role="alert">
-  <h4 class="alert-heading">Disclaimer</h4>
-  <p style="color: #444">Los datos de esta aplicación son obtenidos a partir de los Comunicados Técnicos diários de la <a href="https://www.gob.mx/salud/documentos/informacion-internacional-y-nacional-sobre-nuevo-coronavirus-2019-ncov" target="_blank">Secretaría de Salud, Mx.</a>. No obstante, siempre cabe la posibilidad de problemas de actualización o errores en el código de esta aplicación, por lo cual recuerda siempre verificar con a la información oficial. Evitemos propagar información falsa.</p>  
-</div>')
-
+</div>
+'),
+# DISCLAIMER
+            HTML(
+'
+<input type="checkbox"  id="spoiler" /> 
+<label for="spoiler" ><h3  class="alert-heading red_color"><span class="fas fa-exclamation-triangle"></span> Disclaimer</h3></label>
+<div class="alert  spoiler" role="alert">
+<p style="color: #E6C496; background-color: #1a1a1a; padding: 10px; border-radius: 5px;">Los datos de esta aplicación son obtenidos a partir de los Comunicados Técnicos diários de la <a href="https://www.gob.mx/salud/documentos/informacion-internacional-y-nacional-sobre-nuevo-coronavirus-2019-ncov" target="_blank">Secretaría de Salud, Mx</a>. No obstante, siempre cabe la posibilidad de problemas de actualización o errores en el código de esta aplicación, por lo cual <b>recuerda siempre verificar con a la información oficial. Evitemos propagar información falsa.</b></p><hr>
+</div>
+')
             ), # Ends Raw HTML
             HTML("
-            <p style = 'text-align: right;'>Author: <a href='https://github.com/jRicciL' target='_blank'>J. Ricci-López (2020) &copy;</a>, PhD student at <a href='https://www.cicese.edu.mx/' target='_blank'>CICESE</a>, Mx.<p/>
-                 
+<p style = 'text-align: right;'>Author: <a href='https://github.com/jRicciL' target='_blank'>J. Ricci-López (2020) &copy;</a>, PhD student at <a href='https://www.cicese.edu.mx/' target='_blank'>CICESE</a>.<p/>
                  "),
             
             width = 3,

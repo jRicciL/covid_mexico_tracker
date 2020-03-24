@@ -1,6 +1,7 @@
 a {
     color: #51D5F6;
     text-decoration: none;
+    padding: 0px 4px;
 }
 
 a:hover {
@@ -103,4 +104,32 @@ a:hover {
 /* Usability */
 .fade_white_color {
   color: #BBB;
+}
+
+input#spoiler{
+ display: none;
+}
+input#spoiler + label {
+  width: 200px;
+  padding: 0px 20px;
+  color: #fff;
+  font-size: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+input#spoiler:checked + label {
+  color: #333;
+}
+input#spoiler ~ .spoiler {
+  width: 90%;
+  height: 0;
+  overflow: hidden;
+  opacity: 0;
+  margin: 10px auto 0; 
+  padding: 10px; 
+}
+input#spoiler:checked + label + .spoiler{
+  height: auto;
+  opacity: 1;
+  padding: 10px;
 }
