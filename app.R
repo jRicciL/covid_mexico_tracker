@@ -120,32 +120,12 @@ ui <- fluidPage(
                         ),                 
                 )
             ),
-
             hr(),
             
             fluidRow(
- HTML(
-'
-<div class="col-sm-12">
-<h3 class="alert-heading" style="color: #FFC27E;">Usabilidad</h3>
-
-  <ul class="fade_white_color small">
-    <li>Selecciona la fecha de interés.</li>
-    <li>Da click en el mapa para más información de cada estado.</li>
-    <li>Pasa el cursor sobre algún punto de interés en la <b>línea de tiempo</b> para más información al respecto. Vuelve a la <b>visualización inicial</b> con doble click sobre la gráfica.</li>
-  </ul>
-</div>
-'),
-# DISCLAIMER
-            HTML(
-'
-<input type="checkbox"  id="spoiler" /> 
-<label for="spoiler" ><h3  class="alert-heading red_color"><span class="fas fa-exclamation-triangle"></span> Disclaimer</h3></label>
-<div class="alert  spoiler" role="alert">
-<p style="color: #E6C496; background-color: #111b1d; padding: 10px; border-radius: 5px;">Los datos de esta aplicación son obtenidos a partir de los Comunicados Técnicos diários de la <a href="https://www.gob.mx/salud/documentos/informacion-internacional-y-nacional-sobre-nuevo-coronavirus-2019-ncov" target="_blank">Secretaría de Salud, Mx</a>. No obstante, siempre cabe la posibilidad de problemas de actualización o errores en el código de esta aplicación, por lo cual <b>recuerda siempre verificar con a la información oficial. Evitemos propagar información falsa.</b></p><hr>
-</div>
-')
-            ), # Ends Raw HTML
+ includeHTML(
+'include_html/disclaimer.html')
+            ), #
             HTML("
 <p style = 'text-align: right;'>Author: <a href='https://github.com/jRicciL' target='_blank'>J. Ricci-López (2020) &copy;</a>, PhD student at <a href='https://www.cicese.edu.mx/' target='_blank'>CICESE</a>.<p/>
                  "),
