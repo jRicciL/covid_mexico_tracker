@@ -11,6 +11,9 @@ a:hover {
   border-radius: 5px;
 }
 
+.main_row_layout {
+  margin-top: 1rem;
+}
 
 .info_main_row{
   margin: 1.1rem 3rem;
@@ -90,7 +93,7 @@ a:hover {
 /* Side bar styles*/
 
 .well {
-  background-color: #363b3c;
+  background-color: #3b4344;
 }
 
 .well > h1, p, label {

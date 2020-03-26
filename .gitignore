@@ -2,3 +2,9 @@
 .Rhistory
 .RData
 .Ruserdata
+.gitignore
+data/mexico.rds
+mexico.zip
+names.csv
+rsconnect/
+testing.R

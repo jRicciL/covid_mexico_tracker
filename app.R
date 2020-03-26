@@ -23,7 +23,7 @@ df_pos_states <- raw_data[, -grep("\\_.*$", colnames(raw_data))]
 df_pos_states[, c('Fecha', 'Pos', 'Recovered', 'Deceased')] <- NULL
 colnames(df_pos_states) <- ord_state_names
 df_pos_states <- df_pos_states[ , order(names(df_pos_states))]
-
+max_today <- apply(df_pos_states, 2, max, na.rm = TRUE)
 
 # First date
 first_date <- head(raw_data$Fecha, n = 1)[1]
@@ -39,7 +39,7 @@ date_to_int <- function(text_date){
 }
 
 # Create the palette with the max values until now
-pal <- colorBin("YlOrRd", sqrt(c(1,50)), 
+pal <- colorBin("YlOrRd", sqrt(c(1,max_today)), 
                 bins = 6, na.color = '#FFFFFF')
 
 
@@ -66,8 +66,11 @@ yax_lp[['title']] <- '<b>Número de Casos</b>'
 ui <- fluidPage(
     theme=shinytheme('journal'),
     tags$head(
+        HTML("<title>México: Covid-19 Tracker</title>"),
         tags$link(rel = "stylesheet", type = "text/css", href = "styles.css")
-    ), 
+    ),
+    
+    
     
     sidebarLayout(
         sidebarPanel(
@@ -126,7 +129,7 @@ ui <- fluidPage(
 <div class="col-sm-12">
 <h3 class="alert-heading" style="color: #FFC27E;">Usabilidad</h3>
 
-  <ul class="fade_white_color">
+  <ul class="fade_white_color small">
     <li>Selecciona la fecha de interés.</li>
     <li>Da click en el mapa para más información de cada estado.</li>
     <li>Pasa el cursor sobre algún punto de interés en la <b>línea de tiempo</b> para más información al respecto. Vuelve a la <b>visualización inicial</b> con doble click sobre la gráfica.</li>
@@ -139,7 +142,7 @@ ui <- fluidPage(
 <input type="checkbox"  id="spoiler" /> 
 <label for="spoiler" ><h3  class="alert-heading red_color"><span class="fas fa-exclamation-triangle"></span> Disclaimer</h3></label>
 <div class="alert  spoiler" role="alert">
-<p style="color: #E6C496; background-color: #1a1a1a; padding: 10px; border-radius: 5px;">Los datos de esta aplicación son obtenidos a partir de los Comunicados Técnicos diários de la <a href="https://www.gob.mx/salud/documentos/informacion-internacional-y-nacional-sobre-nuevo-coronavirus-2019-ncov" target="_blank">Secretaría de Salud, Mx</a>. No obstante, siempre cabe la posibilidad de problemas de actualización o errores en el código de esta aplicación, por lo cual <b>recuerda siempre verificar con a la información oficial. Evitemos propagar información falsa.</b></p><hr>
+<p style="color: #E6C496; background-color: #111b1d; padding: 10px; border-radius: 5px;">Los datos de esta aplicación son obtenidos a partir de los Comunicados Técnicos diários de la <a href="https://www.gob.mx/salud/documentos/informacion-internacional-y-nacional-sobre-nuevo-coronavirus-2019-ncov" target="_blank">Secretaría de Salud, Mx</a>. No obstante, siempre cabe la posibilidad de problemas de actualización o errores en el código de esta aplicación, por lo cual <b>recuerda siempre verificar con a la información oficial. Evitemos propagar información falsa.</b></p><hr>
 </div>
 ')
             ), # Ends Raw HTML
@@ -293,7 +296,7 @@ ui <- fluidPage(
                            style = 'margin-bottom: 0px; z-index: 100'),
                     leafletOutput(
                         outputId = 'mapMx',
-                        height = "85%"
+                        height = "83%"
                         ),
                     class = "col-lg-8",
                     style = "height: 550px"
@@ -314,7 +317,7 @@ ui <- fluidPage(
             ),
             width = 9)
     ),
-
+    class='main_row_layout'
 )
 
 # Define server logic required to draw a histogram
@@ -393,7 +396,7 @@ server <- function(input, output, session) {
         # Update the requested cases
         cases_per_state <- cases_requested()
         mexico$cases_per_state <- cases_per_state
-        mexico$relative_n_cases <- abs(sqrt(cases_per_state))
+        mexico$relative_n_cases <- (sqrt(cases_per_state))
         mexico$relative_n_cases[cases_per_state == 0] <- NA
         
         state_popup <- paste0("<strong>Estado: </strong>", 
