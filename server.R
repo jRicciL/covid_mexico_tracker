@@ -104,6 +104,8 @@ shinyServer(function(input, output, session) {
     mexico$relative_n_cases <- (sqrt(cases_per_state)) 
     # Set NA to states with 0 cases in order to paint them as white
     mexico$relative_n_cases[cases_per_state == 0] <- NA 
+    # Get color palette
+    color_palette <- get_pal()
     
     # Text for pop object at click selection 
     state_popup <- paste0("<strong>Estado: </strong>", 
@@ -114,13 +116,13 @@ shinyServer(function(input, output, session) {
     # Create the Leaflet Map
     leaflet(data = mexico) %>%
       addProviderTiles("CartoDB.Positron") %>%
-      addPolygons(fillColor = ~active_pal(relative_n_cases), 
+      addPolygons(fillColor = ~map_pal(relative_n_cases), 
                   fillOpacity = 0.8, 
                   color = "#444", 
                   weight = 1, 
                   popup = state_popup)  %>%
       addLegend("bottomleft", 
-                pal = active_pal, 
+                pal = map_pal, 
                 values = cases_per_state,
                 title = "Número de Casos<br>",
                 opacity = 1,

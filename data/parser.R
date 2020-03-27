@@ -19,7 +19,7 @@ preprocessing_data <- function() {
   ord_state_names <- data_list$ord_state_names
   df_pos_states <- raw_daily_data[, -grep("\\_.*$", colnames(raw_daily_data))]
   # Remove unusefull columns
-  df_pos_states[, c('Fecha', 'Pos', 'Recovered', 'Deceased')] <- NULL
+  df_pos_states[, c('Fecha', 'Pos', 'Recovered', 'Deceased', 'Susp')] <- NULL
   # Order the state names to match the map ordering
   colnames(df_pos_states) <- ord_state_names
   df_pos_states <- df_pos_states[ , order(names(df_pos_states))]
