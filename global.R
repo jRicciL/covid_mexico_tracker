@@ -35,7 +35,6 @@ date_to_int <- function(text_date){
   return(date_int)
 }
 
-
 get_pal <- function(colors_str = "YlOrRd", n_bins = 6 ) {
   pal_ <- colorBin("Greys", sqrt(c(1,max_today)), 
            bins = n_bins, na.color = '#FFFFFF')

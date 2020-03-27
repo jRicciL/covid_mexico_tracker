@@ -51,6 +51,10 @@ a:hover {
   text-align: left;
 }
 
+.icon_column{
+  text-align: right;
+}
+
 
 .icon{
   color: white;
@@ -135,4 +139,20 @@ input#spoiler:checked + label + .spoiler{
   height: auto;
   opacity: 1;
   padding: 10px;
+}
+@media only screen and (max-width: 768px) {
+  .info_column_names {
+    text-align: center;
+  }
+  
+  .info_row_right{
+    text-align:right;
+  }
+  .icon_column{
+    text-align: left;
+  }
+  
+  .date_column {
+   text-align: center; 
+  }
 }

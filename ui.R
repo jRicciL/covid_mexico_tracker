@@ -14,7 +14,7 @@ shinyUI(
   # =========================================================================
   # Sidebar Panel
   # =========================================================================
-        sidebarPanel(
+        column(12,
           h1(span('COVID-19:', class = 'red_color'), span('MxTracker', class='yellow_color')),
           p(span('Última actualización:', class = 'font-weight-bold'), span(last_date_formated)),
           HTML("<p style = 'text-align: left;'><b>Fuente:</b> <a href='https://www.gob.mx/salud/documentos/informacion-internacional-y-nacional-sobre-nuevo-coronavirus-2019-ncov' target='_blank'>SSalud, Mx.</a>, a través de <a href='https://github.com/carranco-sga/Mexico-COVID-19' target='_blank'>carranco-sga</a>.<p/>"),
@@ -58,7 +58,7 @@ shinyUI(
                                         "Casos Negativos" = 'Neg_rep',
                                         "Número de Pruebas Realizadas" = 'Tested_tot'),
                          selected = NULL),
-                    class='col-md-6'
+                    class='col-sm-12'
                  ),                 
               )
           ),
@@ -72,14 +72,15 @@ shinyUI(
           HTML("
   <p style = 'text-align: right;'>Author: <a href='https://github.com/jRicciL' target='_blank'>J. Ricci-López (2020) &copy;</a>, PhD student at <a href='https://www.cicese.edu.mx/' target='_blank'>CICESE</a>.<p/>
               "),
-          width = 3,
+          class = 'col-xs-12 col-md-4 col-lg-3 well',
+          #width = 3,
           style = 'padding: 3rem'),
         
   # =========================================================================
   # Main Panel
   # =========================================================================
   
-        mainPanel(
+        column(12,
   # ***** Mexico Map and National Numbers *****   
           fluidRow(
             # =================
@@ -98,7 +99,7 @@ shinyUI(
                         fluidRow(
                           column(12,
                              h4(textOutput('text_date')),
-                             class = "info_row_right"),
+                             class = "info_row_right date_column"),
                           class='info_row')
                      ),
                      class = 'info_main_row'
@@ -110,13 +111,13 @@ shinyUI(
                           class = "info_column_names"),
                      column(6,
                         fluidRow(
-                          column(8,
+                          column(6,
                              h3(textOutput('text_pos')),
-                             class = "info_row_right"),
-                          column(4,
+                             class = "info_row_right col-xs-6"),
+                          column(6,
                              icon('fas fa-user-plus', 
                                   class = 'icon', lib = "font-awesome"),
-                             class = "info_row_right"),
+                             class = "icon_column col-xs-6"),
                           class='info_row positive_bg_color')
                      ),
                      class = 'info_main_row'
@@ -128,13 +129,13 @@ shinyUI(
                         class = "info_column_names"),
                      column(6,
                         fluidRow(
-                          column(8,
+                          column(6,
                              h3(textOutput('text_susp')),
-                             class = "info_row_right"),
-                          column(4,
+                             class = "info_row_right col-xs-6"),
+                          column(6,
                              icon('fas fa-user-clock', 
                                   class = 'icon', lib = "font-awesome"),
-                             class = "info_row_right"),
+                             class = "icon_column col-xs-6"),
                           class='info_row suspect_bg_color')
                      ),
                      class = 'info_main_row'
@@ -146,13 +147,13 @@ shinyUI(
                         class = "info_column_names"),
                      column(6,
                         fluidRow(
-                          column(8,
+                          column(6,
                              h3(textOutput('text_neg')),
-                             class = "info_row_right"),
-                          column(4,
+                             class = "info_row_right col-xs-6"),
+                          column(6,
                              icon('fas fa-user-minus', 
                                   class = 'icon', lib = "font-awesome"),
-                             class = "info_row_right"),
+                             class = "icon_column col-xs-6"),
                           class='info_row negative_bg_color')
                      ),
                      class = 'info_main_row'
@@ -161,16 +162,16 @@ shinyUI(
                    fluidRow(
                      column(6,
                         h4('Número de RECUPERADOS:'), 
-                        class = "info_column_names"),
+                        class = "info_column_names col-sm-12"),
                      column(6,
                         fluidRow(
-                          column(8,
+                          column(6,
                              h3(textOutput('text_recov')),
-                             class = "info_row_right"),
-                          column(4,
+                             class = "info_row_right col-xs-6"),
+                          column(6,
                              icon('fas fa-user-shield', 
                                   class = 'icon', lib = "font-awesome"),
-                             class = "info_row_right"),
+                             class = "icon_column col-xs-6"),
                           class='info_row recovered_bg_color')
                      ),
                      class = 'info_main_row'
@@ -182,13 +183,13 @@ shinyUI(
                         class = "info_column_names"),
                      column(6,
                         fluidRow(
-                          column(8,
+                          column(6,
                              h3(textOutput('text_deaths')),
-                             class = "info_row_right"),
-                          column(4,
+                             class = "info_row_right col-xs-6"),
+                          column(6,
                              icon('fas fa-cross', 
                                   class = 'icon', lib = "font-awesome"),
-                             class = "info_row_right"),
+                             class = "icon_column col-xs-6"),
                           class='info_row death_bg_color')
                      ),
                      class = 'info_main_row'
@@ -200,18 +201,18 @@ shinyUI(
                         class = "info_column_names"),
                      column(6,
                         fluidRow(
-                          column(8,
+                          column(6,
                              h3(textOutput('text_tested')),
-                             class = "info_row_right"),
-                          column(4,
+                             class = "info_row_right col-xs-6"),
+                          column(6,
                              icon('fas fa-vial', 
                                   class = 'icon', lib = "font-awesome"),
-                             class = "info_row_right"),
+                             class = "icon_column col-xs-6"),
                           class='info_row tested_bg_color')
                      ),
                      class = 'info_main_row'
                    ),
-                class = "col-lg-4"),
+                class = "col-md-12 col-lg-4"),
             
             # =================
             # Mexico Map
@@ -242,7 +243,8 @@ shinyUI(
                           outputId = 'timePlot'))
           )
         ),
-      width = 9)
+      class = 'col-xs-12 col-md-8 col-lg-9',
+      )
     ),
     class='main_row_layout'
   )
