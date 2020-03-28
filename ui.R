@@ -15,32 +15,39 @@ shinyUI(
   # Sidebar Panel
   # =========================================================================
         column(12,
-          h1(span('COVID-19:', class = 'red_color'), span('MxTracker', class='yellow_color')),
-          p(span('Última actualización:', class = 'font-weight-bold'), span(last_date_formated)),
-          HTML("<p style = 'text-align: left;'><b>Fuente:</b> <a href='https://www.gob.mx/salud/documentos/informacion-internacional-y-nacional-sobre-nuevo-coronavirus-2019-ncov' target='_blank'>SSalud, Mx.</a>, a través de <a href='https://github.com/carranco-sga/Mexico-COVID-19' target='_blank'>carranco-sga</a>.<p/>"),
+          div(
+            h1(span('COVID-19:', class = 'red_color'), span('MxTracker', class='yellow_color')),
+            p(span('Última actualización:', style= 'font-weight: bold;'), span(last_date_formated)),
+            p(span('Fuente:', style='font-weight: bold;'),
+              a('SSalud, Mx.', href= 'https://www.gob.mx/salud/documentos/informacion-internacional-y-nacional-sobre-nuevo-coronavirus-2019-ncov', target='blank_'),
+              span('a través de'),
+              a('@carranco-sga', href= 'https://github.com/carranco-sga/Mexico-COVID-19', target='blank_'),
+              ),
+
+            class='header'
+          ),
           hr(),
           
   # ***** INPUT: Date *****    
           fluidRow(
             column(12,
-                   h3('Fecha'),
-                   column(12,
-                          dateInput(
-                            inputId = 'pickDate',
-                            label = 'Selecciona la fecha:',
-                            value = last_date,
-                            format = "dd/mm/yy",
-                            language = 'es'
-                          ),
-                   ), 
-                   class = 'col-md-7'),
-            column(12,
-                   htmlOutput('date_warning'),
-                   class = 'col-md-5')
-          ),
-  
+              h3('Fecha'),
+              column(12,
+                    dateInput(
+                      inputId = 'pickDate',
+                      label = 'Selecciona la fecha:',
+                      value = last_date,
+                      format = "dd/mm/yy",
+                      language = 'es'
+                    ),
+                     class = 'col-sm-12 col-md-12 col-lg-6'),
+              column(12,
+                     htmlOutput('date_warning'),
+                     class = 'col-sm-12  col-md-12 col-lg-6'),
+              class = 'col-xs-12 col-sm-4 col-md-12'
+            ),
+            
   # ***** INPUT: Plotline *****     
-          fluidRow(
             column(12,
                  h3('Línea de Tiempo'),
                  column(12,
@@ -49,7 +56,7 @@ shinyUI(
                                  choices = list("Datos crudos" = 'raw', 
                                                 "Escala Logarítmica" = 'log'),
                                  selected = 'raw'),
-                    class='col-md-6'
+                    class='col-sm-6'
                  ),
                  column(12,
                     checkboxGroupInput("case_categories", 
@@ -58,8 +65,9 @@ shinyUI(
                                         "Casos Negativos" = 'Neg_rep',
                                         "Número de Pruebas Realizadas" = 'Tested_tot'),
                          selected = NULL),
-                    class='col-sm-12'
-                 ),                 
+                    class='col-sm-6'
+                 ),
+                 class = 'col-xs-12 col-sm-8 col-md-12'
               )
           ),
           hr(),
@@ -212,7 +220,7 @@ shinyUI(
                      ),
                      class = 'info_main_row'
                    ),
-                class = "col-md-12 col-lg-4"),
+                class = "col-md-12 col-lg-4 numbers_panel"),
             
             # =================
             # Mexico Map
@@ -238,7 +246,7 @@ shinyUI(
                     span('Número de casos por día',
                          style = 'font-weight: normal;'),
                     class = 'text-center'),
-                 style = 'margin-bottom: -35px; z-index: 1000'),
+                 style = 'margin-bottom: -25px; z-index: 1000'),
              withSpinner(plotlyOutput(
                           outputId = 'timePlot'))
           )
