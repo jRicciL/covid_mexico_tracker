@@ -12,7 +12,7 @@ a:hover {
 }
 
 .main_row_layout {
-  margin-top: 1rem;
+  margin: 2rem 1rem;
 }
 
 .info_main_row{
@@ -98,6 +98,7 @@ a:hover {
 
 .well {
   background-color: #3b4344;
+  border-radius: 10px;
 }
 
 .well > h1, p, label {
@@ -154,5 +155,17 @@ input#spoiler:checked + label + .spoiler{
   
   .date_column {
    text-align: center; 
+  }
+
+}
+
+@media only screen and (max-width: 992px) {
+  .numbers_panel{
+    padding: 0 5rem;
+  }  
+  
+  .header{
+    margin: 0 auto;
+    text-align: center;
   }
 }

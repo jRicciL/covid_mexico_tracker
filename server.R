@@ -116,6 +116,8 @@ shinyServer(function(input, output, session) {
     # Get color palette
     color_palette <- get_pal()
     
+    # TODO: Enrich the map with other categories
+    
     # Text for pop object at click selection 
     state_popup <- paste0("<strong>Estado: </strong>", 
                           mexico$name, 
