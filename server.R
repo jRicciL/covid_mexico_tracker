@@ -20,6 +20,15 @@ shinyServer(function(input, output, session) {
                          '</h5>')
       output$date_warning <- renderText({warning_date_mss})
       return(last_date)
+    } else if (sel_date_int > date_to_int('2020-03-22')) {
+      # If the date is greater than 2020-03-23 shows a warning message indicating the
+      # recovered cases are not reported anymore
+      warning_date_mss <- paste0('<h5 class="alert alert-warning" >',
+                                 'A partir del 23/03/2020 los casos recuperados no son ',
+                                 'reportados explícitamente.',
+                                 '</h5>')
+      output$date_warning <- renderText({warning_date_mss})
+      return(last_date)
     } else {
       # If valid, return the requested date
       output$date_warning <- renderText({''})
@@ -110,7 +119,7 @@ shinyServer(function(input, output, session) {
     # Text for pop object at click selection 
     state_popup <- paste0("<strong>Estado: </strong>", 
                           mexico$name, 
-                          "<br><strong>Número de casos: </strong>", 
+                          "<br><strong>Casos confirmados: </strong>", 
                           mexico$cases_per_state)
     
     # Create the Leaflet Map
