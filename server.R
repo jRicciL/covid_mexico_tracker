@@ -20,16 +20,7 @@ shinyServer(function(input, output, session) {
                          '</h5>')
       output$date_warning <- renderText({warning_date_mss})
       return(last_date)
-    } else if (sel_date_int > date_to_int('2020-03-22')) {
-      # If the date is greater than 2020-03-23 shows a warning message indicating the
-      # recovered cases are not reported anymore
-      warning_date_mss <- paste0('<h5 class="alert alert-warning" >',
-                                 'A partir del 23/03/2020 los casos recuperados no son ',
-                                 'reportados explícitamente.',
-                                 '</h5>')
-      output$date_warning <- renderText({warning_date_mss})
-      return(last_date)
-    } else {
+    }  else {
       # If valid, return the requested date
       output$date_warning <- renderText({''})
       return(selected_date)
@@ -63,9 +54,23 @@ shinyServer(function(input, output, session) {
   })
   
   # Get the acumulated cases at a requested date
-  cases_requested <- reactive({
+  cases_requested_pos <- reactive({
     selected_date <- validate_date()
     cases_date <- df_pos_states[df_total_reps$Fecha == selected_date, ]
+    cases_date <- unlist(cases_date)
+    return(cases_date)           
+  })
+  
+  cases_requested_sup <- reactive({
+    selected_date <- validate_date()
+    cases_date <- df_sup_states[df_total_reps$Fecha == selected_date, ]
+    cases_date <- unlist(cases_date)
+    return(cases_date)           
+  })
+  
+  cases_requested_deceased <- reactive({
+    selected_date <- validate_date()
+    cases_date <- df_deceased_states[df_total_reps$Fecha == selected_date, ]
     cases_date <- unlist(cases_date)
     return(cases_date)           
   })
@@ -90,12 +95,15 @@ shinyServer(function(input, output, session) {
     formated_date <- format(as.Date(selected_date),
                             format = "%d/%B/%Y")
     output$text_date <- renderText({formated_date})
+    # Map title date
+    output$map_title_date <- renderText({formated_date})
   })
   
   # Show cumulative or new cases
   observe({
     cum_or_new_cases_text <- cum_or_new_cases_text()
     output$lp_title <- renderText({cum_or_new_cases_text})
+    output$map_title_cases <- renderText({input$mapData})
   })
   
   # Render text of number of cases per category for the National Numbers Panel
@@ -131,17 +139,41 @@ shinyServer(function(input, output, session) {
   # =========================================================================
   # *********** MEXICO MAP ***********
   output$mapMx <- renderLeaflet({
-    # Update the requested cases
-    cases_per_state <- cases_requested()
+    # Update the requested cases POSITIVES
+    cases_per_state_pos <- cases_requested_pos()
+    # Update the requested cases SUSPECT
+    cases_per_state_sup <- cases_requested_sup()
+    # Update the requested cases DECEASED
+    cases_per_state_dec <- cases_requested_deceased()
+    
     # Parse the values the map object
-    # Actual case numbers
-    mexico$cases_per_state <- cases_per_state 
+    # Actual case numbers confirmed
+    mexico$cases_per_state_pos <- cases_per_state_pos 
+    mexico$cases_per_state_sup <- cases_per_state_sup
+    mexico$cases_per_state_dec <- cases_per_state_dec
+    
+    # JUST for coloring
     # Sqrt of case numbers for a better color palette
-    mexico$relative_n_cases <- (sqrt(cases_per_state)) 
+    
+    if (input$mapData == 'positivos'){
+      color_palette <- get_pal('YlOrRd', max_today = max_pos_today)
+      relative_n_cases <- (sqrt(cases_per_state_pos))
+      cases_per_state <- cases_per_state_pos
+    } else if (input$mapData == 'sospechosos'){
+      color_palette <- get_pal('YlGn', max_today = max_sup_today)
+      relative_n_cases <- (sqrt(cases_per_state_sup))
+      cases_per_state <- cases_per_state_sup
+    } else {
+      color_palette <- get_pal('BuPu', max_today = max_deceased_today)
+      relative_n_cases <- (sqrt(cases_per_state_dec))
+      cases_per_state <- cases_per_state_dec
+    }
+    
+    
+    mexico$relative_n_cases <- relative_n_cases
     # Set NA to states with 0 cases in order to paint them as white
-    mexico$relative_n_cases[cases_per_state == 0] <- NA 
-    # Get color palette
-    color_palette <- get_pal()
+    mexico$relative_n_cases[relative_n_cases == 0] <- NA
+    
     
     # TODO: Enrich the map with other categories
     
@@ -149,18 +181,22 @@ shinyServer(function(input, output, session) {
     state_popup <- paste0("<strong>Estado: </strong>", 
                           mexico$name, 
                           "<br><strong>Casos confirmados: </strong>", 
-                          mexico$cases_per_state)
+                          mexico$cases_per_state_pos,
+                          "<br><strong>Casos sospechosos: </strong>", 
+                          mexico$cases_per_state_sup,
+                          "<br><strong>Decesos: </strong>", 
+                          mexico$cases_per_state_dec)
     
     # Create the Leaflet Map
     leaflet(data = mexico) %>%
       addProviderTiles("CartoDB.Positron") %>%
-      addPolygons(fillColor = ~map_pal(relative_n_cases), 
+      addPolygons(fillColor = ~color_palette(relative_n_cases), 
                   fillOpacity = 0.8, 
                   color = "#444", 
                   weight = 1, 
                   popup = state_popup)  %>%
       addLegend("bottomleft", 
-                pal = map_pal, 
+                pal = color_palette, 
                 values = cases_per_state,
                 title = "Número de Casos<br>",
                 opacity = 1,
@@ -198,7 +234,8 @@ shinyServer(function(input, output, session) {
                                  width = 5),
                      text = paste0('<b>Positivos</b>',
                                    '<br><b>Casos ',  
-                                   cum_or_new_cases_text(), ':</b> ', df_[['Pos_rep']],
+                                   cum_or_new_cases_text(), ':</b> ', 
+                                   df_[['Pos_rep']],
                                    '<br><b>Fecha:</b> ', df_$Fecha),
                      name = 'Casos Positivos',
                      hovertemplate = paste('%{text}')) %>%
@@ -224,8 +261,8 @@ shinyServer(function(input, output, session) {
       }
       # Get the category color and name
       color_ <- switch (column,
-                'Susp_rep' = 'rgb(80,147,148)',
-                'Neg_rep' = 'rgb(81,157,72)',
+                'Susp_rep' = 'rgb(81,157,72)',
+                'Neg_rep' = 'rgb(80,147,148)',
                 'Tested_tot' = 'rgb(195,148,202)'
       )
       
@@ -259,7 +296,8 @@ shinyServer(function(input, output, session) {
     # Set the layout and general plotly configuration
     fig <- fig %>%
       layout(xaxis = ax_lp, yaxis = yax_lp, 
-             paper_bgcolor = 'rgba(0,0,0,0)', 
+             paper_bgcolor = 'rgba(0,0,0,0)',
+             plot_bgcolor = 'rgba(239,238,225,1)',
              font = font_plotly,
              legend = list(title = list(text = '<b>Categorías:</b>'),
                            x = 0.05, y =0.95)) %>%
