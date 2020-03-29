@@ -127,11 +127,12 @@ shinyUI(
         column(12,
   # ***** Mexico Map and National Numbers *****   
           fluidRow(
+            
             # =================
             # National Numbers
             # =================
             column(12, 
-                   div(h3('Datos Nacionales',
+                   div(h3('Resumen nacional',
                           class = 'text-center'),
                        style = 'margin-bottom: 0px; z-index: 100'),
                    hr(),
@@ -282,9 +283,14 @@ shinyUI(
           ),
         ),
         
-  # ***** Time Plot *****  
+  # ***** Time Plot *****
+  
+  
         fluidRow(
-          column(12,
+          # =================
+          # Time Line
+          # =================
+          column(12, class= 'col-lg-8',
              div(h3(span('Linea de Tiempo: ', 
                          style='font-weight: bold;'),
                     span('Número de casos',
@@ -303,7 +309,12 @@ shinyUI(
               ),
              style = 'padding: 0 2rem;'
             )
-          )
+          ),
+          
+          
+          column(12, class = 'col-md-12 col-lg-4',
+                 h3('Temp')
+          ),
         ),
       class = 'col-xs-12 col-md-8 col-lg-9',
       )
