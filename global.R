@@ -36,7 +36,7 @@ date_to_int <- function(text_date){
 }
 
 get_pal <- function(colors_str = "YlOrRd", n_bins = 6 ) {
-  pal_ <- colorBin("Greys", sqrt(c(1,max_today)), 
+  pal_ <- colorBin(colors_str, sqrt(c(1,max_today)), 
            bins = n_bins, na.color = '#FFFFFF')
   return(pal_)
 }
@@ -47,7 +47,7 @@ get_pal <- function(colors_str = "YlOrRd", n_bins = 6 ) {
 
 # ****** Color Palettes ******
 # Color palette used for active cases in mexico map
-map_pal <- colorBin("YlOrRd", sqrt(c(1,max_today)), 
+map_pal <- colorBin("Spectral", sqrt(c(1,max_today)), 
                 bins = 6, na.color = '#FFFFFF')
 error_pal <- colorBin("Greys", sqrt(c(1,max_today)), 
                        bins = 6, na.color = '#FFFFFF')
