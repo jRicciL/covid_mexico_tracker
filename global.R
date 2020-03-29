@@ -15,7 +15,11 @@ data <- preprocessing_data()
 
 df_total_reps <- data$df_total_reps
 df_pos_states <- data$df_pos_states
-max_today <- data$max_today
+df_sup_states <- data$df_sup_states
+df_deceased_states <- data$df_deceased_states
+max_pos_today <- data$max_pos_today
+max_sup_today <- data$max_sup_today
+max_deceased_today <- data$max_deceased_today
 first_date <- data$first_date
 last_date <- data$last_date
 last_date_formated <- format(as.Date(last_date), 
@@ -35,8 +39,10 @@ date_to_int <- function(text_date){
   return(date_int)
 }
 
-get_pal <- function(colors_str = "YlOrRd", n_bins = 6 ) {
-  pal_ <- colorBin(colors_str, sqrt(c(1,max_today)), 
+# ****** Color Palettes ******
+# Color palette used for active cases in mexico map
+get_pal <- function(colors_str = "YlOrRd", n_bins = 6,  reverse = FALSE, max_today) {
+  pal_ <- colorBin(colors_str, sqrt(c(1, max_today)), reverse = reverse, 
            bins = n_bins, na.color = '#FFFFFF')
   return(pal_)
 }
@@ -44,13 +50,6 @@ get_pal <- function(colors_str = "YlOrRd", n_bins = 6 ) {
 # =========================================================================
 # Plotling utilities
 # =========================================================================
-
-# ****** Color Palettes ******
-# Color palette used for active cases in mexico map
-map_pal <- colorBin("Spectral", sqrt(c(1,max_today)), 
-                bins = 6, na.color = '#FFFFFF')
-error_pal <- colorBin("Greys", sqrt(c(1,max_today)), 
-                       bins = 6, na.color = '#FFFFFF')
 
 # ****** Spinner Options ******
 options(spinner.color="#FF7467", spinner.color.background="#ffffff", spinner.size=1.5)
