@@ -1,3 +1,7 @@
+body {
+  background-color: #efeee1;
+}
+
 a {
     color: #51D5F6;
     text-decoration: none;
@@ -12,7 +16,7 @@ a:hover {
 }
 
 .main_row_layout {
-  margin: 2rem 1rem;
+  margin: 1rem 1rem;
 }
 
 .info_main_row{
@@ -75,11 +79,11 @@ a:hover {
 }
 
 .suspect_bg_color {
-  background-color: #90BEBF;
+  background-color: #9EC67E;
 }
 
 .negative_bg_color {
-  background-color: #9EC67E;
+  background-color: #90BEBF;
 }
 
 .recovered_bg_color{
@@ -107,6 +111,11 @@ a:hover {
 
 .well > div > div > h3 {
   color: #FFC27E;;
+}
+
+/* shiny widgets */
+.shiny-options-group {
+  padding-left: 2rem;
 }
 
 /* Usability */
