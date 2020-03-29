@@ -15,6 +15,7 @@ shinyUI(
   # Sidebar Panel
   # =========================================================================
         column(12,
+               
           div(
             h1(span('COVID-19:', class = 'red_color'), span('MxTracker', class='yellow_color')),
             p(span('Última actualización:', style= 'font-weight: bold;'), span(last_date_formated)),
@@ -40,25 +41,16 @@ shinyUI(
                       format = "dd/mm/yy",
                       language = 'es'
                     ),
-                     class = 'col-sm-12 col-md-12 col-lg-6'),
+                     class = 'col-sm-12 col-md-12 col-lg-12'),
               column(12,
                      htmlOutput('date_warning'),
-                     class = 'col-sm-12  col-md-12 col-lg-6'),
+                     class = 'col-sm-12  col-md-12 col-lg-12'),
               class = 'col-xs-12 col-sm-4 col-md-12'
             ),
             
   # ***** INPUT: Plotline *****     
             column(12,
                  h3('Línea de Tiempo'),
-                 # Scale
-                 column(12,
-                    radioButtons("scale_log", 
-                                 label = p("Selecciona la escala de visualización:"), 
-                                 choices = list("Datos crudos" = 'raw', 
-                                                "Escala Logarítmica" = 'log'),
-                                 selected = 'raw'),
-                    class='col-sm-6'
-                 ),
                  # Cummulative or new cases
                  column(12,
                         radioButtons("cum_or_new_cases", 
@@ -66,6 +58,15 @@ shinyUI(
                          choices = list("Acumulados" = 'cum', 
                                         "Nuevos" = 'new'),
                          selected = NULL),
+                    class='col-sm-6'
+                 ),
+                 # Scale
+                 column(12,
+                    radioButtons("scale_log", 
+                                 label = p("Selecciona la escala de visualización:"), 
+                                 choices = list("Datos crudos" = 'raw', 
+                                                "Escala Logarítmica" = 'log'),
+                                 selected = 'raw'),
                     class='col-sm-6'
                  ),
                  # Complementary categories
@@ -178,23 +179,27 @@ shinyUI(
                      class = 'info_main_row'
                    ),
                    # ***** Recovered Cases *****
-                   fluidRow(
-                     column(6,
-                        h4('Número de RECUPERADOS:'), 
-                        class = "info_column_names col-sm-12"),
-                     column(6,
-                        fluidRow(
-                          column(6,
-                             h3(textOutput('text_recov')),
-                             class = "info_row_right col-xs-6"),
-                          column(6,
-                             icon('fas fa-user-shield', 
-                                  class = 'icon', lib = "font-awesome"),
-                             class = "icon_column col-xs-6"),
-                          class='info_row recovered_bg_color')
+                   conditionalPanel(
+                     condition = "input.pickDate < '2020-03-22'",
+                     fluidRow(
+                       column(6,
+                              h4('Número de RECUPERADOS:'), 
+                              class = "info_column_names col-sm-12"),
+                       column(6,
+                              fluidRow(
+                                column(6,
+                                       h3(textOutput('text_recov')),
+                                       class = "info_row_right col-xs-6"),
+                                column(6,
+                                       icon('fas fa-user-shield', 
+                                            class = 'icon', lib = "font-awesome"),
+                                       class = "icon_column col-xs-6"),
+                                class='info_row recovered_bg_color')
+                       ),
+                       class = 'info_main_row'
                      ),
-                     class = 'info_main_row'
                    ),
+                   
                    # ***** Deceased Cases *****
                    fluidRow(
                      column(6,
