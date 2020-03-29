@@ -31,7 +31,7 @@ shinyUI(
           
   # ***** INPUT: Date *****    
           fluidRow(
-            column(12,
+            column(6,
               h3('Fecha'),
               column(12,
                     dateInput(
@@ -41,11 +41,26 @@ shinyUI(
                       format = "dd/mm/yy",
                       language = 'es'
                     ),
-                     class = 'col-sm-12 col-md-12 col-lg-12'),
+                     class = 'col-sm-8 col-md-8 col-lg-8'),
               column(12,
                      htmlOutput('date_warning'),
-                     class = 'col-sm-12  col-md-12 col-lg-12'),
-              class = 'col-xs-12 col-sm-4 col-md-12'
+                     class = 'col-sm-8  col-md-8 col-lg-8'),
+              class = 'col-xs-12 col-sm-6 col-md-12'
+            ),
+            
+            column(6,
+                   h3('Mapa'),
+                   column(12,
+                          selectInput(
+                            inputId = 'mapData',
+                            label = 'Mostrar Casos:',
+                            choices = list("Positivos" = 'positivos', 
+                                           "Sospechosos" = 'sospechosos',
+                                           "Decesos" = 'decesos'), 
+                            selected = 'positivos'
+                          ),
+                          class = 'col-sm-8 col-md-8 col-lg-8'),
+                   class = 'col-xs-12 col-sm-6 col-md-12'
             ),
             
   # ***** INPUT: Plotline *****     
@@ -57,8 +72,8 @@ shinyUI(
                          label = p("Casos por día:"), 
                          choices = list("Acumulados" = 'cum', 
                                         "Nuevos" = 'new'),
-                         selected = NULL),
-                    class='col-sm-6'
+                         selected = NULL, inline = T),
+                    class='col-sm-4 col-md-12'
                  ),
                  # Scale
                  column(12,
@@ -66,8 +81,8 @@ shinyUI(
                                  label = p("Selecciona la escala de visualización:"), 
                                  choices = list("Datos crudos" = 'raw', 
                                                 "Escala Logarítmica" = 'log'),
-                                 selected = 'raw'),
-                    class='col-sm-6'
+                                 selected = 'raw', inline = T),
+                    class='col-sm-4 col-md-12'
                  ),
                  # Complementary categories
                  column(12,
@@ -77,9 +92,9 @@ shinyUI(
                                         "Casos Negativos" = 'Neg_rep',
                                         "Número de Pruebas Realizadas" = 'Tested_tot'),
                          selected = NULL),
-                    class='col-sm-6'
+                    class='col-sm-4 col-md-12'
                  ),
-                 class = 'col-xs-12 col-sm-8 col-md-12'
+                 class = 'col-xs-12 col-sm-12 col-md-12'
               )
           ),
           hr(),
@@ -243,13 +258,16 @@ shinyUI(
             # =================
             column(12, 
                div(h3(
-                      paste0('Número de casos confirmados por Estado'),
+                      span('Número de casos', style='font-weight: normal'), 
+                      span(textOutput('map_title_cases', inline = TRUE)), 
+                      span('por Estado:', style='font-weight: normal'),
+                      span(textOutput('map_title_date', inline = TRUE), class='small'),
                       class = 'text-center'),
                    style = 'margin-bottom: 0px; z-index: 100'),
                leafletOutput(
                  outputId = 'mapMx',
                  height = "83%"
-                 ),
+               ),
                class = "col-lg-8",
                style = "height: 550px"
           ),
@@ -268,10 +286,14 @@ shinyUI(
                          style = 'font-weight: normal'),
                     class = 'text-center'),
                  style = 'margin-bottom: -25px; z-index: 1000'),
-            # withSpinner(
+           div(
+             withSpinner(
                plotlyOutput(
-                          outputId = 'timePlot'),
-             #  )
+                 outputId = 'timePlot'
+               ),
+              ),
+             style = 'padding: 0 2rem;'
+            )
           )
         ),
       class = 'col-xs-12 col-md-8 col-lg-9',
