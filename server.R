@@ -184,9 +184,9 @@ shinyServer(function(input, output, session) {
     # Text for pop object at click selection 
     state_popup <- paste0("<strong>Estado: </strong>", 
                           mexico$name, 
-                          "<br><strong>Casos confirmados: </strong>", 
+                          "<br><strong>Confirmados: </strong>", 
                           mexico$cases_per_state_pos,
-                          "<br><strong>Casos sospechosos: </strong>", 
+                          "<br><strong>Sospechosos: </strong>", 
                           mexico$cases_per_state_sup,
                           "<br><strong>Decesos: </strong>", 
                           mexico$cases_per_state_dec)
