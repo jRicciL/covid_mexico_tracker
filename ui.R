@@ -66,6 +66,14 @@ shinyUI(
   # ***** INPUT: Plotline *****     
             column(12,
                  h3('Línea de Tiempo'),
+                 # From the first confirmed case
+                 column(12,
+                        checkboxInput("from_first_pos_case", 
+                                     label = p("A partir del primer caso positivo confirmado",
+                                               style='font-weight: bold;'), 
+                                     value = FALSE),
+                        class='col-sm-4 col-md-12'
+                 ),
                  # Cummulative or new cases
                  column(12,
                         radioButtons("cum_or_new_cases", 
@@ -75,13 +83,14 @@ shinyUI(
                          selected = NULL, inline = T),
                     class='col-sm-4 col-md-12'
                  ),
+                 
                  # Scale
                  column(12,
                     radioButtons("scale_log", 
                                  label = p("Selecciona la escala de visualización:"), 
                                  choices = list("Datos crudos" = 'raw', 
                                                 "Escala Logarítmica" = 'log'),
-                                 selected = 'raw', inline = T),
+                                 selected = 'raw'),
                     class='col-sm-4 col-md-12'
                  ),
                  # Complementary categories
@@ -142,7 +151,7 @@ shinyUI(
                    # ***** Positive Cases *****
                    fluidRow(
                      column(6,
-                          h4('Número de CONFIRMADOS:'), 
+                          h4('Número de POSITIVOS:'), 
                           class = "info_column_names"),
                      column(6,
                         fluidRow(

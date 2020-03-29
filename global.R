@@ -13,6 +13,8 @@ source('data/parser.R')
 # =========================================================================
 data <- preprocessing_data()
 
+DATE_FIRST_POS_CASE = '2020-02-28'
+
 df_total_reps <- data$df_total_reps
 df_pos_states <- data$df_pos_states
 df_sup_states <- data$df_sup_states

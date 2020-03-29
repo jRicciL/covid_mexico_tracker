@@ -50,6 +50,10 @@ shinyServer(function(input, output, session) {
     # Get the case categories
     categories <- c(c('Fecha', 'Pos_rep'), input$case_categories)
     df_ <- df_total_reps[, categories]
+    # Show from the first confirmed case
+    if(input$from_first_pos_case){
+      df_ <- df_[df_$Pos_rep >= DATE_FIRST_POS_CASE, ]
+    }
     return(df_)
   })
   
@@ -221,7 +225,7 @@ shinyServer(function(input, output, session) {
     
     # Max y value of the whole df
     max_y_value = apply(df_, 2, max, na.rm = TRUE)
-    DATE_FIRST_POS_CASE = '2020-02-28'
+    
     # Plot y-axis title
     yax_lp[['title']] <- paste0('<b>Número de Casos ', cum_or_new_cases_text(), ' </b>')
     # Creates the plot and add the Positive Cases
