@@ -70,4 +70,4 @@ font_plotly <- list(
 ax_lp <- list(marging = list(pad = 0), linecolor = 'rgb(0,0,0)', 
               linewidth = 3, showline = T, title = '<b>Fecha</b>')
 yax_lp <- ax_lp
-yax_lp[['title']] <- '<b>Número de Casos</b>'
+

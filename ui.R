@@ -50,6 +50,7 @@ shinyUI(
   # ***** INPUT: Plotline *****     
             column(12,
                  h3('Línea de Tiempo'),
+                 # Scale
                  column(12,
                     radioButtons("scale_log", 
                                  label = p("Selecciona la escala de visualización:"), 
@@ -58,6 +59,16 @@ shinyUI(
                                  selected = 'raw'),
                     class='col-sm-6'
                  ),
+                 # Cummulative or new cases
+                 column(12,
+                        radioButtons("cum_or_new_cases", 
+                         label = p("Casos por día:"), 
+                         choices = list("Acumulados" = 'cum', 
+                                        "Nuevos" = 'new'),
+                         selected = NULL),
+                    class='col-sm-6'
+                 ),
+                 # Complementary categories
                  column(12,
                     checkboxGroupInput("case_categories", 
                          label = p("Categorías complementárias:"), 
@@ -242,13 +253,20 @@ shinyUI(
   # ***** Time Plot *****  
         fluidRow(
           column(12,
-             div(h3('Linea de Tiempo: ',
-                    span('Número de casos por día',
+             div(h3(span('Linea de Tiempo: ', 
+                         style='font-weight: bold;'),
+                    span('Número de casos',
                          style = 'font-weight: normal;'),
+                    span(textOutput('lp_title', inline = TRUE),
+                         style = 'font-weight: bold'),
+                    span('por día',
+                         style = 'font-weight: normal'),
                     class = 'text-center'),
                  style = 'margin-bottom: -25px; z-index: 1000'),
-             withSpinner(plotlyOutput(
-                          outputId = 'timePlot'))
+            # withSpinner(
+               plotlyOutput(
+                          outputId = 'timePlot'),
+             #  )
           )
         ),
       class = 'col-xs-12 col-md-8 col-lg-9',

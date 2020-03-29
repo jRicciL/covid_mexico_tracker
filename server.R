@@ -42,8 +42,19 @@ shinyServer(function(input, output, session) {
     df_total_reps[df_total_reps$Fecha == selected_date, ]
   })
   
+  # Transform cummulated cases to new cases per day
+  df_line_plot_new <- reactive({
+    df_ <- df_total_reps
+    # Get the case categories
+    categories <- c(c('Fecha', 'Pos_rep'), input$case_categories)
+    df_ <- df_total_reps[, categories]
+    df_ <- data.frame(diff(as.matrix(df_[c(-1)])))
+    df_$Fecha <- tail(df_total_reps$Fecha, -1)
+    return(df_)
+  })
+  
   # Dataframe to get a time series of commulated cases given $case_categories
-  df_line_plot <- reactive({
+  df_line_plot_cum <- reactive({
     df_ <- df_total_reps
     # Get the case categories
     categories <- c(c('Fecha', 'Pos_rep'), input$case_categories)
@@ -59,6 +70,16 @@ shinyServer(function(input, output, session) {
     return(cases_date)           
   })
   
+  # Cumulative or new cases
+  cum_or_new_cases_text <- reactive({
+    cum_or_new_cases <- input$cum_or_new_cases
+    cum_or_new_text <- switch (cum_or_new_cases,
+            'cum' = 'acumulados',
+            'new' = 'nuevos'
+    )
+    return(cum_or_new_text)
+  })
+  
   
   # =========================================================================
   # OUTPUTS: Observe Resources
@@ -69,6 +90,12 @@ shinyServer(function(input, output, session) {
     formated_date <- format(as.Date(selected_date),
                             format = "%d/%B/%Y")
     output$text_date <- renderText({formated_date})
+  })
+  
+  # Show cumulative or new cases
+  observe({
+    cum_or_new_cases_text <- cum_or_new_cases_text()
+    output$lp_title <- renderText({cum_or_new_cases_text})
   })
   
   # Render text of number of cases per category for the National Numbers Panel
@@ -147,11 +174,20 @@ shinyServer(function(input, output, session) {
   # *********** TIME LINE PLOT ***********
   output$timePlot <- renderPlotly({
     # Get the dataframe with the requested columns
-    df_ <- df_line_plot()
+    df_ <- switch (input$cum_or_new_cases,
+      'cum' = df_line_plot_cum(),
+      'new' = df_line_plot_new()
+    )
+    
+    pop_text <- paste0('<br><b>Casos ',  
+                        cum_or_new_cases_text(), ':</b> ', df_[['Pos_rep']],
+                       '<br><b>Fecha:</b> ', df_$Fecha)
+    
     # Max y value of the whole df
     max_y_value = apply(df_, 2, max, na.rm = TRUE)
     DATE_FIRST_POS_CASE = '2020-02-28'
-    
+    # Plot y-axis title
+    yax_lp[['title']] <- paste0('<b>Número de Casos ', cum_or_new_cases_text(), ' </b>')
     # Creates the plot and add the Positive Cases
     fig <- plot_ly(type = 'scatter', mode = 'markers+lines') %>%
            add_trace(x = df_$Fecha,
@@ -160,10 +196,10 @@ shinyServer(function(input, output, session) {
                                    color = 'rgb(231, 87, 74)'),
                      line = list(color = 'rgb(231, 87, 74)',
                                  width = 5),
-                     text = paste0(
-                       '<b>Positivos</b>',
-                       '<br><b>Casos:</b> ', df_[['Pos_rep']],
-                       '<br><b>Fecha:</b> ', df_$Fecha),
+                     text = paste0('<b>Positivos</b>',
+                                   '<br><b>Casos ',  
+                                   cum_or_new_cases_text(), ':</b> ', df_[['Pos_rep']],
+                                   '<br><b>Fecha:</b> ', df_$Fecha),
                      name = 'Casos Positivos',
                      hovertemplate = paste('%{text}')) %>%
           # add a vertical segment indicating the first confirmed case in the country
@@ -196,7 +232,7 @@ shinyServer(function(input, output, session) {
       name_ <- switch (column,
                 'Susp_rep' = 'Sospechosos',
                 'Neg_rep' = 'Negativos',
-                'Tested_tot' = 'Núm. Pruebas Realizadas'
+                'Tested_tot' = 'Núm. Pruebas<br>Realizadas'
       )
       
       # Add the category trace
@@ -205,7 +241,8 @@ shinyServer(function(input, output, session) {
                      y = df_[[column]],
                      text = paste0(
                        '<b>', name_,'</b>',
-                       '<br><b>Casos:</b> ', df_[[column]],
+                       '<br><b>Casos ',  
+                       cum_or_new_cases_text(), ':</b> ', df_[[column]],
                        '<br><b>Fecha:</b> ', df_$Fecha),
                      name = name_,
                      marker = list(size = 10,
