@@ -51,9 +51,7 @@ shinyServer(function(input, output, session) {
     categories <- c(c('Fecha', 'Pos_rep'), input$case_categories)
     df_ <- df_total_reps[, categories]
     # Show from the first confirmed case
-    if(input$from_first_pos_case){
-      df_ <- df_[df_$Pos_rep >= DATE_FIRST_POS_CASE, ]
-    }
+    
     return(df_)
   })
   
@@ -89,6 +87,14 @@ shinyServer(function(input, output, session) {
     return(cum_or_new_text)
   })
   
+  # Get the info table of cases at a requested date
+  get_daily_data_info <- reactive({
+    all_reps <- total_cases_date()
+    n_pos <- all_reps['Pos_rep'][[1]]
+    raw_daily_data_date <- raw_daily_data[1:n_pos, ]
+    return(raw_daily_data_date)
+  })
+  
   
   # =========================================================================
   # OUTPUTS: Observe Resources
@@ -101,6 +107,8 @@ shinyServer(function(input, output, session) {
     output$text_date <- renderText({formated_date})
     # Map title date
     output$map_title_date <- renderText({formated_date})
+    # Sec 2 titile date
+    output$sec2_title_date <- renderText({formated_date})
   })
   
   # Show cumulative or new cases
@@ -219,6 +227,11 @@ shinyServer(function(input, output, session) {
       'new' = df_line_plot_new()
     )
     
+    # Get from the first case reported?
+    if(input$from_first_pos_case){
+      df_ <- df_[df_$Pos_rep >= DATE_FIRST_POS_CASE, ]
+    }
+    
     pop_text <- paste0('<br><b>Casos ',  
                         cum_or_new_cases_text(), ':</b> ', df_[['Pos_rep']],
                        '<br><b>Fecha:</b> ', df_$Fecha)
@@ -305,6 +318,82 @@ shinyServer(function(input, output, session) {
              font = font_plotly,
              legend = list(title = list(text = '<b>Categorías:</b>'),
                            x = 0.05, y =0.95)) %>%
+      config(modeBarButtonsToRemove = modebar_plotly_conf,
+             displaylogo = FALSE,
+             displayModeBar = FALSE)
+    
+  })
+  
+  # *********** PIE PLOT: SEX ***********
+  output$pieSex <- renderPlotly({
+    daily_data_info <- get_daily_data_info()
+    table_sex_nat <- as.data.frame(table(daily_data_info['Sexo']))
+    
+    pie <- plot_ly(table_sex_nat, labels = c('Femenino', 'Masculino'), values=~Freq, type = 'pie',
+                   textposition = 'inside',
+                   insidetextfont = list(color = '#000000', size = 16),
+                   textinfo = 'label+value+percent', showlegend = F,
+                   hoverinfo = 'text',
+                   marker = list(colors = c('rgb(102, 194, 165)', 'rgb(141, 160, 203)'),
+                                 line = list(color = '#FFFFFF', width = 3))) %>% 
+      layout(xaxis = ax_lp, yaxis = yax_lp, 
+             paper_bgcolor = 'rgba(0,0,0,0)',
+             plot_bgcolor = 'rgba(239,238,225,1)') %>%
+      config(modeBarButtonsToRemove = modebar_plotly_conf,
+             displaylogo = FALSE,
+             displayModeBar = FALSE)
+    
+  })
+  
+  # *********** HIST PLOT: AGES ***********
+  output$histAges <- renderPlotly({
+    daily_data_info <- get_daily_data_info()
+    
+    ax_hist <- ax_lp
+    ay_hist <- yax_lp
+    ax_hist[['title']] <- '<b>Rangos de edad</b>'
+    ay_hist[['title']] <- '<b>Num. de casos</b>'
+    df_age_nat <- daily_data_info[, c('Edad', 'Sexo')]
+    if (input$splitBySex) {
+      hist <- plot_ly(df_age_nat, x = ~Edad, type='histogram', color=~Sexo, nbinsx = 10,
+                      text = ~Edad,
+                      marker = list(colors = c('rgb(161, 198, 125)', 'rgb(102, 194, 165)'),
+                                    line = list(color = '#FFFFFF', width = 1)),
+                      name = ~Sexo)
+    } else {
+      hist <- plot_ly(df_age_nat, x = ~Edad, type='histogram',
+                      xbins = 10, 
+                      marker = list(color = c('rgb(164, 192, 127)'),
+                                    line = list(color = '#FFFFFF', width = 1)))
+    }
+    hist <- hist %>%
+        layout(xaxis = ax_hist, yaxis = ay_hist,
+               paper_bgcolor = 'rgba(0,0,0,0)',
+               plot_bgcolor = 'rgba(239,238,225,1)',
+               legend = list(title = list(text = '<b>Sexo:</b>'),
+                             x = 0.05, y = 0.95),
+               xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+               yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE)) %>%
+          config(modeBarButtonsToRemove = modebar_plotly_conf,
+                 displaylogo = FALSE,
+                 displayModeBar = FALSE)
+    
+  })
+  
+  # *********** BAR PLOT: COUNTRY ORIGIN ***********
+  output$importCountry <- renderPlotly({
+    daily_data_info <- get_daily_data_info()
+    
+    ax_bar <- ax_lp
+    ay_bar <- yax_lp
+    ax_bar[['title']] <- '<b>Num. de casos</b>'
+    ay_bar[['title']] <- '<b>País</b>'
+    df_country_nat <- as.data.frame(table(daily_data_info['País_fuente']))
+    plot_ly(df_country_nat, y = ~Var1, x = ~Freq, type='bar', color = c('rgb(231, 87, 74)'),
+            name = 'Hombres', orientation = 'h')  %>%
+      layout(xaxis = ax_bar,  yaxis = ay_bar,
+             paper_bgcolor = 'rgba(0,0,0,0)',
+             plot_bgcolor = 'rgba(239,238,225,1)') %>%
       config(modeBarButtonsToRemove = modebar_plotly_conf,
              displaylogo = FALSE,
              displayModeBar = FALSE)

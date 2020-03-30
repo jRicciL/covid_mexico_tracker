@@ -41,10 +41,10 @@ shinyUI(
                       format = "dd/mm/yy",
                       language = 'es'
                     ),
-                     class = 'col-sm-8 col-md-8 col-lg-8'),
+                     class = 'col-sm-8 col-md-8 col-lg-10'),
               column(12,
                      htmlOutput('date_warning'),
-                     class = 'col-sm-8  col-md-8 col-lg-8'),
+                     class = 'col-sm-8  col-md-8 col-lg-10'),
               class = 'col-xs-12 col-sm-6 col-md-12'
             ),
             
@@ -59,7 +59,7 @@ shinyUI(
                                            "Decesos" = 'decesos'), 
                             selected = 'positivos'
                           ),
-                          class = 'col-sm-8 col-md-8 col-lg-8'),
+                          class = 'col-sm-8 col-md-8 col-lg-10'),
                    class = 'col-xs-12 col-sm-6 col-md-12'
             ),
             
@@ -123,7 +123,7 @@ shinyUI(
   # =========================================================================
   # Main Panel
   # =========================================================================
-  
+
         column(12,
   # ***** Mexico Map and National Numbers *****   
           fluidRow(
@@ -283,15 +283,14 @@ shinyUI(
           ),
         ),
         
+  
   # ***** Time Plot *****
-  
-  
         fluidRow(
           # =================
           # Time Line
           # =================
-          column(12, class= 'col-lg-8',
-             div(h3(span('Linea de Tiempo: ', 
+          column(12, class= 'col-lg-12',
+             div(h3(span('Linea de Tiempo Nacional: ', 
                          style='font-weight: bold;'),
                     span('Número de casos',
                          style = 'font-weight: normal;'),
@@ -299,8 +298,8 @@ shinyUI(
                          style = 'font-weight: bold'),
                     span('por día',
                          style = 'font-weight: normal'),
-                    class = 'text-center'),
-                 style = 'margin-bottom: -25px; z-index: 1000'),
+                    class = 'text-center')
+                 ),
            div(
              withSpinner(
                plotlyOutput(
@@ -310,10 +309,65 @@ shinyUI(
              style = 'padding: 0 2rem;'
             )
           ),
+        ),
+  
+        hr(),      
+        
+        h3(span('Desgloce de los Datos:'), 
+           span(textOutput('sec2_title_date', inline = TRUE), class='small'),  style = 'text-align: center;'),
+  
+        hr(), 
+        fluidRow(
           
+          # =================
+          # Stacker bars and hist
+          # =================
+          column(12, class = 'col-sm-12 col-md-4 col-lg-4',
+                 h4(span('Distribución de Sexos:'),
+                    span('Casos positivos', style='font-weight: normal'), class='text-center'),
+                 div(
+                   withSpinner(
+                     plotlyOutput(
+                       outputId = 'pieSex'
+                     ),
+                   ),
+                   style = 'padding: 0 1rem;'
+                 )
+          ),
           
-          column(12, class = 'col-md-12 col-lg-4',
-                 h3('Temp')
+          column(12, class = 'col-sm-12 col-md-5 col-lg-5',
+                 h4(span('Distribución de Edades:'),
+                    span('Casos positivos', style='font-weight: normal'), class='text-center'),
+                 div(
+                   
+                   withSpinner(
+                     plotlyOutput(
+                       outputId = 'histAges'
+                     ),
+                   ),
+                   style = 'padding: 0 1rem;'
+                 ),
+                 div(
+                   checkboxInput("splitBySex", 
+                                 label = p("Distribuir por sexos",
+                                           style='color: black; font-weight: bold;'), 
+                                 value = TRUE),
+                   style='padding-left: 80px;'
+                 ),
+                 
+          ),
+          
+          column(12, class = 'col-sm-12 col-md-3 col-lg-3',
+                 h4(span('País Fuente:'),
+                    span('Casos positivos', style='font-weight: normal'), class='text-center'),
+                 div(
+                   withSpinner(
+                     plotlyOutput(
+                       outputId = 'importCountry'
+                     ),
+                   ),
+                   style = 'padding: 0 1rem;'
+                 )
           ),
         ),
       class = 'col-xs-12 col-md-8 col-lg-9',

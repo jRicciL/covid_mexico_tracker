@@ -19,6 +19,7 @@ df_total_reps <- data$df_total_reps
 df_pos_states <- data$df_pos_states
 df_sup_states <- data$df_sup_states
 df_deceased_states <- data$df_deceased_states
+raw_daily_data <- data$raw_daily_data
 max_pos_today <- data$max_pos_today
 max_sup_today <- data$max_sup_today
 max_deceased_today <- data$max_deceased_today
@@ -27,6 +28,7 @@ last_date <- data$last_date
 last_date_formated <- format(as.Date(last_date), 
                              format = "%d de %b del %Y")
 mexico <- data$mexico
+
 
 # =========================================================================
 # helper function date_to_int
