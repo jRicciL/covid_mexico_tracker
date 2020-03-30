@@ -7,6 +7,7 @@ preprocessing_data <- function() {
   URL <- 'https://raw.githubusercontent.com/carranco-sga/Mexico-COVID-19/master/Mexico_COVID19.csv'
   raw_daily_data <- read.csv(URL, stringsAsFactors =  FALSE)
   
+  
   # Mexico map preprocessed
   data_list <- readRDS('data/data.rds')
   
@@ -54,6 +55,10 @@ preprocessing_data <- function() {
   # Last date
   last_date <- tail(raw_daily_data$Fecha, n = 1)[1]
   
+  # Daily data per state
+  URL_DAILY <- paste0('https://raw.githubusercontent.com/carranco-sga/Mexico-COVID-19/master/Daily%20data/positivos_', gsub("-", "", last_date), '.csv')
+  raw_daily_data <- read.csv(URL_DAILY, stringsAsFactors =  FALSE)
+  
   # ******** Map Data ********
   mexico <- data_list$mexico
   
@@ -62,6 +67,7 @@ preprocessing_data <- function() {
     df_total_reps = df_total_reps,
     df_pos_states = df_pos_states,
     df_sup_states = df_sup_states,
+    raw_daily_data = raw_daily_data,
     df_deceased_states = df_deceased_states,
     max_pos_today = max_pos_today,
     max_sup_today = max_sup_today,
