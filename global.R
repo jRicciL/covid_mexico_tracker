@@ -6,6 +6,7 @@ library(shinythemes)
 library(plotly)
 library(leaflet)
 library(shinycssloaders)
+library(RColorBrewer)
 source('data/parser.R')
 
 # =========================================================================
@@ -28,9 +29,12 @@ last_date <- data$last_date
 last_date_formated <- format(as.Date(last_date), 
                              format = "%d de %b del %Y")
 mexico <- data$mexico
+MX_SATES <- mexico$names_corrected
+MX_POP <- mexico$population_states
+MX_POP <- as.vector(MX_POP)
+names(MX_POP) <- MX_SATES
 
-
-# =========================================================================
+  # =========================================================================
 # helper function date_to_int
 #
 # @description: convert a given string date (ISO format)  to int

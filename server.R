@@ -187,7 +187,7 @@ shinyServer(function(input, output, session) {
     
     # Text for pop object at click selection 
     state_popup <- paste0("<strong>Estado: </strong>", 
-                          mexico$name, 
+                          mexico$names_corrected, 
                           "<br><strong>Confirmados: </strong>", 
                           mexico$cases_per_state_pos,
                           "<br><strong>Sospechosos: </strong>", 
@@ -326,7 +326,7 @@ shinyServer(function(input, output, session) {
     table_sex_nat <- as.data.frame(table(daily_data_info['Sexo']))
     
     pie <- plot_ly(table_sex_nat, labels = c('Femenino', 'Masculino'), values=~Freq, type = 'pie',
-                   textposition = 'inside',
+                   textposition = 'inside', height = 380,
                    insidetextfont = list(color = '#000000', size = 16),
                    textinfo = 'label+value+percent', showlegend = F,
                    hoverinfo = 'text',
@@ -352,7 +352,7 @@ shinyServer(function(input, output, session) {
     df_age_nat <- daily_data_info[, c('Edad', 'Sexo')]
     if (input$splitBySex) {
       hist <- plot_ly(df_age_nat, x = ~Edad, type='histogram', color=~Sexo, nbinsx = 10,
-                      text = ~Edad,
+                      text = ~Edad, height = 380,
                       marker = list(colors = c('rgb(161, 198, 125)', 'rgb(102, 194, 165)'),
                                     line = list(color = '#efeee1', width = 1)),
                       name = ~Sexo)
@@ -386,13 +386,75 @@ shinyServer(function(input, output, session) {
     ay_bar[['title']] <- '<b>País</b>'
     df_country_nat <- as.data.frame(table(daily_data_info['País_fuente']))
     plot_ly(df_country_nat, y = ~Var1, x = ~Freq, type='bar', color = c('rgb(231, 87, 74)'),
-            name = 'Hombres', orientation = 'h')  %>%
+            name = 'Hombres', orientation = 'h', height = 380)  %>%
       layout(xaxis = ax_bar,  yaxis = ay_bar,
              paper_bgcolor = 'rgba(0,0,0,0)',
              plot_bgcolor = 'rgba(241,239,218,1)') %>%
       config(modeBarButtonsToRemove = modebar_plotly_conf,
              displaylogo = FALSE,
              displayModeBar = FALSE)
+    
+  })
+  
+  get_df_time_states <- reactive({
+    df_ <- df_pos_states
+    df_$Fecha <- df_total_reps$Fecha
+    df_ <- df_[df_$Fecha >= '2020-02-27', ]
+  })
+  
+  # *********** LINE PLOT: CASES PER STATE ***********
+  output$statesTimePlot <- renderPlotly({
+    df_ <- get_df_time_states()
+    
+    fig <- plot_ly(type = 'scatter', mode = 'markers+lines')
+    for (column in colnames(df_)) {
+      # Skip Fecha and Pos_rep
+      if (column == 'Fecha') {
+        next
+      } 
+      
+      if (input$normalizeCases) {
+        # Dividir entre la población
+        y <- df_[[column]]/MX_POP[column] * 100000
+        relative_cases <- paste0('<br><b>Por cada 100K hab:',  
+                                 ':</b> ', round(y, 2))
+        y_ax_title <- '<b>Num. casos por cada<br>100,000 habitantes</b>'
+      } else {
+        y <- df_[[column]]
+        relative_cases <- ''
+        y_ax_title <- '<b>Num. casos por Estado<br></b>'
+      }
+      
+      fig <- fig %>% 
+        add_trace(x = df_$Fecha,
+                  y =  y,
+                  text = paste0(
+                    '<b>', column, '</b>',
+                    '<br><b>Casos Totales',  
+                    ':</b> ', df_[[column]],
+                    
+                    '<br><b>Fecha:</b> ', df_$Fecha),
+                  name = column,
+                  colors='Viridis',
+                  showlegend=FALSE,
+                  opacity=0.4,
+                  line = list(
+                    dash = 'solid',
+                    width = 3),
+                  hovertemplate = paste('%{text}')) 
+    }
+    yx_lineStates <- yax_lp
+    yx_lineStates[['title']] <- y_ax_title
+    xx_lileStates <- ax_lp
+    xx_lileStates[['title']] <- '<b>Fecha</b> (desde el primer caso reportado.)'
+    fig <- fig %>% layout(xaxis = xx_lileStates,  yaxis = yx_lineStates,
+           colorway = brewer.pal(n = 11, name = "Spectral"),
+           paper_bgcolor = 'rgba(0,0,0,0)',
+           plot_bgcolor = 'rgba(241,239,218,1)') %>%
+      config(modeBarButtonsToRemove = modebar_plotly_conf,
+             displaylogo = FALSE,
+             displayModeBar = FALSE)
+    fig
     
   })
 })

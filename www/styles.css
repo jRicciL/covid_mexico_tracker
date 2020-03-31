@@ -136,6 +136,19 @@ a:hover {
   background-color: #ad754d;
 }
 
+/* Button */
+.btn-default {
+    color: #ffffff;
+    background-color: #BCAE8E;
+    border-color: #7a7a7a;
+}
+
+.btn-default:hover {
+    color: #ffffff;
+    background-color: #F87C71;
+    border-color: #7a7a7a;
+}
+
 /* Side bar styles*/
 
 .well {
@@ -174,6 +187,10 @@ label.radio-inline > span,
 .sideSecondary {
   background-color: #dad4b9;
   border-radius: 8px;
+}
+
+.sec3-header {
+  margin-top: 100px;
 }
 
 input#spoiler{

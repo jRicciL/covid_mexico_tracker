@@ -331,7 +331,7 @@ shinyUI(
                                                          choices = list("Casos Sospechosos" = 'Susp_rep', 
                                                                         "Casos Negativos" = 'Neg_rep',
                                                                         "Número de Pruebas Realizadas" = 'Tested_tot'),
-                                                         selected = NULL),
+                                                         selected = c('Susp_rep', 'Neg_rep', 'Tested_tot')),
                                       class='col-xs-12 col-sm-6 col-lg-12 plot_input_labels'
                                ),
                                
@@ -374,7 +374,8 @@ shinyUI(
                column(12,
                       class = 'col-xs-12  col-lg-9 col-lg-push-3',
                       h3(span('Desglose de los Datos:'),
-                         span(textOutput('sec2_title_date', inline = TRUE), class='small'),  style = 'text-align: center;'),
+                         span(textOutput('sec2_title_date', inline = TRUE), style='font-weight: normal'),
+                         style = 'text-align: center;'),
                       hr(),
                       column(12, class = 'col-sm-12 col-md-4 col-lg-4',
                              h4(span('Distribución de Sexos:'),
@@ -420,6 +421,27 @@ shinyUI(
                                    outputId = 'importCountry'
                                  ),
                                ),
+                               style = 'padding: 0 0;'
+                             )
+                      ),
+                      
+                      column(12, class = 'col-sm-12 col-md-12 col-lg-12',
+                             h3(span('Línea de Tiempo por Estado:'),
+                                span('Casos positivos', style='font-weight: normal'), class='text-center'),
+                             div(
+                               withSpinner(
+                                 plotlyOutput(
+                                   outputId = 'statesTimePlot'
+                                 ),
+                               ),
+                               div(
+                                 checkboxInput("normalizeCases", 
+                                               label = h4(span("Normalizar los casos:", style='font-weight: bold;'), 
+                                                               span("Casos por cada 100,000 habitantes"),
+                                                          style='font-weight: normal; color: black; margin: 0.2rem 0;'), 
+                                               value = FALSE),
+                                 style='padding-left: 80px;'
+                               ),
                                style = 'padding: 0 1rem; min-height: 450px;'
                              )
                       ),
@@ -436,39 +458,59 @@ shinyUI(
                              style='padding: 0 4rem',
                              class = 'col-xs-12 col-sm-12 col-md-12',
                              h3(icon('fas fa-info-circle'),
-                                'Información sobre los casos', style='font-weight: normal;'),
-                             # From the first confirmed case
+                                'Información sobre los casos', style='font-weight: normal;', class='sec3-header'),
+                             hr(class='hr_main_red'),
+                             br(),
+                             # Go to date button
                              column(12,
-                                     dateInput(
-                                       inputId = 'pickDate',
-                                       label = h4('Selecciona la fecha:',
-                                                style='font-weight: normal; color: black; margin: 0.2rem 0;'),
-                                       value = last_date,
-                                       format = "dd/mm/yy",
-                                       language = 'es'
-                                     ),
+                                    actionButton(
+                                      inputId = 'selState',
+                                      label = h4('Modificar fecha seleccionada',
+                                                 style='font-weight: normal; color: black; margin: 0.2rem 0;'),
+                                      onclick ="document.getElementById('pickDate').scrollIntoView();"
+                                    ),
                                     class='col-xs-12 col-sm-6 col-lg-12', 
                                     style = 'padding: 0 2rem;', style='margin-top: 1rem;'
                              ),
+                             br(),
+                             br(),
+                             # Select data per a requested state?
+                             column(12,
+                                    checkboxInput("filterByState", 
+                                                  label = h4("Filtrar datos por estado.",
+                                                             style='font-weight: bold; color: #444; margin: 0 1rem;'), 
+                                                  value = FALSE),
+                                    class='col-xs-12 col-sm-6 col-lg-12', 
+                                    style = 'padding: 0 2rem;', style='margin-top: 1rem;'
+                             ),
+                             # State Selection
+                             conditionalPanel(
+                               condition = "input.filterByState === true",
+                               column(12,
+                                      selectInput(
+                                        inputId = 'selState',
+                                        label = h4('Selecciona el Estado:',
+                                                   style='font-weight: bold; color: black; margin: 0.2rem 0;'),
+                                        choices = MX_SATES, 
+                                        selected = 'positivos'
+                                      ),
+                                      class='col-xs-12 col-sm-6 col-lg-12', 
+                                      style = 'padding: 0 2rem;', style='margin-top: 1rem;'
+                               ),
+                             ),
+                             
                              # Complementary categories
                              column(12,
-                                    hr(),
+                                    p(''),
                                     class='col-xs-12 col-sm-6 col-lg-12 plot_input_labels'
                              ),
-                             
-                             # Cummulative or new cases
-                             column(12,
-                                    hr(),
-                                    class='col-xs-12 col-sm-6 col-lg-12 plot_input_labels', style='margin-top: 1rem;'
-                             ),
-                             
-                             
                       ),
                       class = 'col-xs-12 col-lg-3 col-lg-pull-9 sideSecondary',
                       style = 'padding: 3rem'
                ),
                
              ),
+             
              class = 'col-xs-12 col-md-12 col-lg-12',
       )
     ),
