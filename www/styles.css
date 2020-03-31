@@ -144,6 +144,13 @@ a:hover {
   color: #BBB;
 }
 
+/* Inline iputs plots */
+.plot_input_labels > div > div > div > label> span {
+  color: #555;
+  margin-left: 1rem;
+
+}
+
 input#spoiler{
  display: none;
 }

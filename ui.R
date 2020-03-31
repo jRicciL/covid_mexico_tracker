@@ -67,33 +67,7 @@ shinyUI(
   # ***** INPUT: Plotline *****     
             column(12,
                  h3('Línea de Tiempo'),
-                 # From the first confirmed case
-                 column(12,
-                        checkboxInput("from_first_pos_case", 
-                                     label = p("A partir del primer caso positivo confirmado",
-                                               style='font-weight: bold;'), 
-                                     value = FALSE),
-                        class='col-sm-4 col-md-12'
-                 ),
-                 # Cummulative or new cases
-                 column(12,
-                        radioButtons("cum_or_new_cases", 
-                         label = p("Casos por día:"), 
-                         choices = list("Acumulados" = 'cum', 
-                                        "Nuevos" = 'new'),
-                         selected = NULL, inline = T),
-                    class='col-sm-4 col-md-12'
-                 ),
                  
-                 # Scale
-                 column(12,
-                    radioButtons("scale_log", 
-                                 label = p("Selecciona la escala de visualización:"), 
-                                 choices = list("Datos crudos" = 'raw', 
-                                                "Escala Logarítmica" = 'log'),
-                                 selected = 'raw'),
-                    class='col-sm-4 col-md-12'
-                 ),
                  # Complementary categories
                  column(12,
                     checkboxGroupInput("case_categories", 
@@ -104,6 +78,7 @@ shinyUI(
                          selected = NULL),
                     class='col-sm-4 col-md-12'
                  ),
+                 
                  class = 'col-xs-12 col-sm-12 col-md-12'
               )
           ),
@@ -281,17 +256,20 @@ shinyUI(
                ),
                class = "col-lg-8",
                style = "height: 550px",
-               column(6,
-                checkboxInput("normalizeCasesMap", 
-                              label = h4("Casos por cada 100, 000 habitantes.",
-                                        style='font-weight: normal; color: black; margin: 0.2rem 0;'), 
-                              value = FALSE),
-                      
+               fluidRow(
+                 column(6,
+                        checkboxInput("normalizeCasesMap", 
+                                      label = h4("Casos por cada 100, 000 habitantes.",
+                                                 style='font-weight: normal; color: black; margin: 0.2rem 0;'), 
+                                      value = FALSE),
+                        
+                 ),
+                 column(6,
+                        p("normalizeCasesMap", style='color: #999;', class='small'),
+                        style='text-align: right;'
+                 ),
                ),
-               column(6,
-                      p("normalizeCasesMap", style='color: #999;', class='small'),
-                  style='text-align: right;'
-               ),
+               
           ),
         ),
   
@@ -322,16 +300,48 @@ shinyUI(
              style = 'padding: 0 2rem;'
             )
           ),
+          
         ),
-  
+        # time line inputs
+        fluidRow(style='padding: 0 60px; margin-top: 20px; margin-left: 60px;',
+            
+            # Cummulative or new cases
+            column(12,
+                   radioButtons("cum_or_new_cases", 
+                                label = h4("Casos por día:",
+                                           style='font-weight: bold; color: #444; margin: 1rem 0;'), 
+                                choices = list("Acumulados" = 'cum', 
+                                               "Nuevos" = 'new'),
+                                selected = NULL, inline = F),
+                   class='col-sm-4 col-md-4 plot_input_labels', style='margin-top: 1rem;'
+            ),
+            
+            # Scale
+            column(12,
+                   radioButtons("scale_log", 
+                                label = h4("Selecciona la escala de visualización:",
+                                           style='font-weight: bold; color: #444; margin: 1rem 0;'), 
+                                choices = list("Datos crudos" = 'raw', 
+                                               "Escala Logarítmica" = 'log'),
+                                selected = 'raw'),
+                   class='col-sm-4 col-md-4 plot_input_labels', style='margin-top: 1rem;'
+            ),
+            
+            # From the first confirmed case
+            column(12,
+                   checkboxInput("from_first_pos_case", 
+                                 label = h4("A partir del primer caso positivo confirmado",
+                                            style='font-weight: bold; color: #444; margin: 0 0;'), 
+                                 value = FALSE),
+                   class='col-sm-4 col-md-4', style = 'padding: 0 2rem;', style='margin-top: 1rem;'
+            ),
+          ),
         hr(class='hr_main'),     
         
-        h3(span('Desgloce de los Datos:'), 
-           span(textOutput('sec2_title_date', inline = TRUE), class='small'),  style = 'text-align: center;'),
-  
         hr(), 
         fluidRow(
-          
+          h3(span('Desgloce de los Datos:'), 
+           span(textOutput('sec2_title_date', inline = TRUE), class='small'),  style = 'text-align: center;'),
           # =================
           # Stacker bars and hist
           # =================

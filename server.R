@@ -313,7 +313,7 @@ shinyServer(function(input, output, session) {
              plot_bgcolor = 'rgba(239,238,225,1)',
              font = font_plotly,
              legend = list(title = list(text = '<b>Categorías:</b>'),
-                           x = 0.05, y =0.95)) %>%
+                           x = 0.07, y =0.95)) %>%
       config(modeBarButtonsToRemove = modebar_plotly_conf,
              displaylogo = FALSE,
              displayModeBar = FALSE)
@@ -331,7 +331,7 @@ shinyServer(function(input, output, session) {
                    textinfo = 'label+value+percent', showlegend = F,
                    hoverinfo = 'text',
                    marker = list(colors = c('rgb(102, 194, 165)', 'rgb(141, 160, 203)'),
-                                 line = list(color = '#FFFFFF', width = 3))) %>% 
+                                 line = list(color = '#efeee1', width = 4))) %>% 
       layout(xaxis = ax_lp, yaxis = yax_lp, 
              paper_bgcolor = 'rgba(0,0,0,0)',
              plot_bgcolor = 'rgba(239,238,225,1)') %>%
@@ -354,7 +354,7 @@ shinyServer(function(input, output, session) {
       hist <- plot_ly(df_age_nat, x = ~Edad, type='histogram', color=~Sexo, nbinsx = 10,
                       text = ~Edad,
                       marker = list(colors = c('rgb(161, 198, 125)', 'rgb(102, 194, 165)'),
-                                    line = list(color = '#FFFFFF', width = 1)),
+                                    line = list(color = '#efeee1', width = 1)),
                       name = ~Sexo)
     } else {
       hist <- plot_ly(df_age_nat, x = ~Edad, type='histogram',
