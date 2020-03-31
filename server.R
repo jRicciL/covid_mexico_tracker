@@ -210,7 +210,7 @@ shinyServer(function(input, output, session) {
       addLegend("bottomleft", 
                 pal = color_palette, 
                 values = cases_per_state,
-                title = "Número de Casos<br>",
+                title = paste0("Número de<br>", input$mapData),
                 opacity = 1,
                 labFormat = labelFormat(
                     prefix = "", suffix = "", between = " - ",
@@ -280,7 +280,7 @@ shinyServer(function(input, output, session) {
       color_ <- switch (column,
                 'Susp_rep' = 'rgb(81,157,72)',
                 'Neg_rep' = 'rgb(80,147,148)',
-                'Tested_tot' = 'rgb(195,148,202)'
+                'Tested_tot' = 'rgb(173,117,77)'
       )
       
       name_ <- switch (column,
