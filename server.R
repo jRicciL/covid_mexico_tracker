@@ -310,7 +310,7 @@ shinyServer(function(input, output, session) {
     fig <- fig %>%
       layout(xaxis = ax_lp, yaxis = yax_lp, 
              paper_bgcolor = 'rgba(0,0,0,0)',
-             plot_bgcolor = 'rgba(239,238,225,1)',
+             plot_bgcolor = 'rgba(241,239,218,1)',
              font = font_plotly,
              legend = list(title = list(text = '<b>Categorías:</b>'),
                            x = 0.07, y =0.95)) %>%
@@ -334,7 +334,7 @@ shinyServer(function(input, output, session) {
                                  line = list(color = '#efeee1', width = 4))) %>% 
       layout(xaxis = ax_lp, yaxis = yax_lp, 
              paper_bgcolor = 'rgba(0,0,0,0)',
-             plot_bgcolor = 'rgba(239,238,225,1)') %>%
+             plot_bgcolor = 'rgba(241,239,218,1)') %>%
       config(modeBarButtonsToRemove = modebar_plotly_conf,
              displaylogo = FALSE,
              displayModeBar = FALSE)
@@ -365,7 +365,7 @@ shinyServer(function(input, output, session) {
     hist <- hist %>%
         layout(xaxis = ax_hist, yaxis = ay_hist,
                paper_bgcolor = 'rgba(0,0,0,0)',
-               plot_bgcolor = 'rgba(239,238,225,1)',
+               plot_bgcolor = 'rgba(241,239,218,1)',
                legend = list(title = list(text = '<b>Sexo:</b>'),
                              x = 0.05, y = 0.95),
                xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
@@ -389,7 +389,7 @@ shinyServer(function(input, output, session) {
             name = 'Hombres', orientation = 'h')  %>%
       layout(xaxis = ax_bar,  yaxis = ay_bar,
              paper_bgcolor = 'rgba(0,0,0,0)',
-             plot_bgcolor = 'rgba(239,238,225,1)') %>%
+             plot_bgcolor = 'rgba(241,239,218,1)') %>%
       config(modeBarButtonsToRemove = modebar_plotly_conf,
              displaylogo = FALSE,
              displayModeBar = FALSE)

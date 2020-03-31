@@ -79,9 +79,7 @@ shinyUI(
                            style='color: #58EBD7'), class='header'),
                       br(),
                       # # ***** Disclaimer *****       
-                      # fluidRow(
-                      #   includeHTML('include_html/disclaimer.html')
-                      # ), 
+                       
                       # ***** Footer *****
                       HTML("<div class='header'>
                       <p style = 'text-align: right;' class='header'><a href='https://github.com/jRicciL'  target='_blank'>J. Ricci-López (2020) &copy;</a>, PhD student at <a href='https://www.cicese.edu.mx/' target='_blank'>CICESE</a>.<p/>
@@ -264,7 +262,8 @@ shinyUI(
                         #        
                         # ),
                         column(12,
-                               p("normalizeCasesMap", style='color: #999;', class='small'),
+                               p("GIS data map:", a('Kyle Walker', href='http://personal.tcu.edu/kylewalker/'),
+                                 style='color: #999;', class='small'),
                                style='text-align: right;'
                         ),
                       ),
@@ -302,7 +301,7 @@ shinyUI(
                              )
                       ),
                       class = 'col-xs-12  col-lg-9 col-lg-push-3',
-                      style = 'padding: 3rem; min-height: 600px;'
+                      style = 'padding: 3rem; min-height: 620px;'
                   ),
                
                column(12,
@@ -312,7 +311,9 @@ shinyUI(
                         column(12,
                                style='padding: 0 4rem',
                                class = 'col-xs-12 col-sm-12 col-md-12',
-                               h3('Línea de Tiempo', style='font-weight: normal;'),
+                               h3(icon("fas fa-clock"), 
+                                  'Línea de Tiempo', style='font-weight: normal; color: #333'),
+                               hr(class='hr_main_red'),
                                # From the first confirmed case
                                column(12,
                                       checkboxInput("from_first_pos_case", 
@@ -372,7 +373,7 @@ shinyUI(
                
                column(12,
                       class = 'col-xs-12  col-lg-9 col-lg-push-3',
-                      h3(span('Desgloce de los Datos:'),
+                      h3(span('Desglose de los Datos:'),
                          span(textOutput('sec2_title_date', inline = TRUE), class='small'),  style = 'text-align: center;'),
                       hr(),
                       column(12, class = 'col-sm-12 col-md-4 col-lg-4',
@@ -434,7 +435,8 @@ shinyUI(
                       column(12,
                              style='padding: 0 4rem',
                              class = 'col-xs-12 col-sm-12 col-md-12',
-                             h3('Información sobre los casos', style='font-weight: normal;'),
+                             h3(icon('fas fa-info-circle'),
+                                'Información sobre los casos', style='font-weight: normal;'),
                              # From the first confirmed case
                              column(12,
                                      dateInput(
@@ -470,6 +472,9 @@ shinyUI(
              class = 'col-xs-12 col-md-12 col-lg-12',
       )
     ),
-    class='main_row_layout'
+    class='main_row_layout',
+    div(
+      includeHTML('include_html/footer.html')
+    ),
   )
 )

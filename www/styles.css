@@ -1,12 +1,21 @@
-body {
-  background-color: #efeee1;
-  padding-top: 10px;
-  padding-left: 15px;
+html, body {
+  background-color: #f1efda;
+  margin: 0;
+  padding: 0;
+}
+
+.container-fluid {
+  padding-top: 20px;
+  padding-left: 25px;
 }
 
 a {
     color: #FF985D;
     text-decoration: none;
+}
+
+a:visited {
+  color: #58EBD7;
 }
 
 a:hover {
@@ -18,10 +27,10 @@ a:hover {
   border: 0;
   height: 2px;
   background: #c4b998;
-  background-image: -webkit-linear-gradient(left, #efeee1, #c4b998, #efeee1);
-  background-image: -moz-linear-gradient(left, #efeee1, #c4b998, #efeee1);
-  background-image: -ms-linear-gradient(left, #efeee1, #c4b998, #efeee1);
-  background-image: -o-linear-gradient(left, #efeee1, #c4b998, #efeee1);
+  background-image: -webkit-linear-gradient(left, #f1efda, #c4b998, #f1efda);
+  background-image: -moz-linear-gradient(left, #f1efda, #c4b998, #f1efda);
+  background-image: -ms-linear-gradient(left, #f1efda, #c4b998, #f1efda);
+  background-image: -o-linear-gradient(left, #f1efda, #c4b998, #f1efda);
 }
 
 .hr_main_light {
@@ -32,6 +41,16 @@ a:hover {
   background-image: -moz-linear-gradient(left, #3b4344, #D4DADC, #3b4344);
   background-image: -ms-linear-gradient(left, #3b4344, #D4DADC, #3b4344);
   background-image: -o-linear-gradient(left, #3b4344, #D4DADC, #3b4344);
+}
+
+.hr_main_red {
+  border: 0;
+  height: 2px;
+  background: #A14826;
+  background-image: -webkit-linear-gradient(left, #dad4b9, #A14826, #dad4b9);
+  background-image: -moz-linear-gradient(left, #dad4b9, #A14826, #dad4b9);
+  background-image: -ms-linear-gradient(left, #dad4b9, #A14826, #dad4b9);
+  background-image: -o-linear-gradient(left, #dad4b9, #A14826, #dad4b9);
 }
 
 .main_row_layout {
@@ -153,7 +172,7 @@ label.radio-inline > span,
 }
 
 .sideSecondary {
-  background-color: #dcdbce;
+  background-color: #dad4b9;
   border-radius: 8px;
 }
 
@@ -213,3 +232,34 @@ input#spoiler:checked + label + .spoiler{
   }
 }
 
+/* Footer */
+
+.footer {
+  background-color: #3b4344;
+  padding: 2em 4em;
+  margin: 3em 0 0 0;
+  width: 100%;
+  display: inline-block;
+}
+
+.footer > div > div > h3 {
+  color: #FFC27E;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  padding-top: 2rem;
+  border-bottom: 3px solid #535E60;
+}
+
+.footer > div {
+  text-align: center;
+}
+
+.col-footer {
+  text-align: center;
+  color: white;
+  padding: 0 2em;
+}
+
+.footer > div > div > ul {
+  text-align: left;
+}
