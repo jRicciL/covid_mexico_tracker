@@ -27,9 +27,9 @@ shinyUI(
 
             class='header'
           ),
-          hr(),
+          hr(class='hr_main_light'),
           
-  # ***** INPUT: Date *****    
+          # ***** INPUT: Date *****    
           fluidRow(
             column(6,
               h3('Fecha'),
@@ -47,10 +47,10 @@ shinyUI(
                      class = 'col-sm-8  col-md-8 col-lg-10'),
               class = 'col-xs-12 col-sm-6 col-md-12'
             ),
-            
+            # ***** INPUT: MAP *****          
             column(6,
                    h3('Mapa'),
-                   column(12,
+                   column(6,
                           selectInput(
                             inputId = 'mapData',
                             label = 'Mostrar Casos:',
@@ -60,6 +60,7 @@ shinyUI(
                             selected = 'positivos'
                           ),
                           class = 'col-sm-8 col-md-8 col-lg-10'),
+                   
                    class = 'col-xs-12 col-sm-6 col-md-12'
             ),
             
@@ -106,7 +107,7 @@ shinyUI(
                  class = 'col-xs-12 col-sm-12 col-md-12'
               )
           ),
-          hr(),
+          hr(class='hr_main_light'),
   
   # ***** Disclaimer *****       
           fluidRow(
@@ -135,7 +136,7 @@ shinyUI(
                    div(h3('Resumen nacional',
                           class = 'text-center'),
                        style = 'margin-bottom: 0px; z-index: 100'),
-                   hr(),
+                   hr(class='hr_main'),
                    # ***** Date *****
                    fluidRow(
                      column(6,
@@ -279,10 +280,22 @@ shinyUI(
                  height = "83%"
                ),
                class = "col-lg-8",
-               style = "height: 550px"
+               style = "height: 550px",
+               column(6,
+                checkboxInput("normalizeCasesMap", 
+                              label = h4("Casos por cada 100, 000 habitantes.",
+                                        style='font-weight: normal; color: black; margin: 0.2rem 0;'), 
+                              value = FALSE),
+                      
+               ),
+               column(6,
+                      p("normalizeCasesMap", style='color: #999;', class='small'),
+                  style='text-align: right;'
+               ),
           ),
         ),
-        
+  
+        hr(class='hr_main'),
   
   # ***** Time Plot *****
         fluidRow(
@@ -311,7 +324,7 @@ shinyUI(
           ),
         ),
   
-        hr(),      
+        hr(class='hr_main'),     
         
         h3(span('Desgloce de los Datos:'), 
            span(textOutput('sec2_title_date', inline = TRUE), class='small'),  style = 'text-align: center;'),
@@ -349,8 +362,8 @@ shinyUI(
                  ),
                  div(
                    checkboxInput("splitBySex", 
-                                 label = p("Distribuir por sexos",
-                                           style='color: black; font-weight: bold;'), 
+                                 label = h4("Distribuir por sexos",
+                                           style='font-weight: normal; color: black; margin: 0.2rem 0;'), 
                                  value = TRUE),
                    style='padding-left: 80px;'
                  ),

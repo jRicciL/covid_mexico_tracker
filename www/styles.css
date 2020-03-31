@@ -18,11 +18,11 @@ a:hover {
 .hr_main {
   border: 0;
   height: 2px;
-  background: #617275;
-  background-image: -webkit-linear-gradient(left, #efeee1, #617275, #efeee1);
-  background-image: -moz-linear-gradient(left, #efeee1, #617275, #efeee1);
-  background-image: -ms-linear-gradient(left, #efeee1, #617275, #efeee1);
-  background-image: -o-linear-gradient(left, #efeee1, #617275, #efeee1);
+  background: #c4b998;
+  background-image: -webkit-linear-gradient(left, #efeee1, #c4b998, #efeee1);
+  background-image: -moz-linear-gradient(left, #efeee1, #c4b998, #efeee1);
+  background-image: -ms-linear-gradient(left, #efeee1, #c4b998, #efeee1);
+  background-image: -o-linear-gradient(left, #efeee1, #c4b998, #efeee1);
 }
 
 .hr_main_light {

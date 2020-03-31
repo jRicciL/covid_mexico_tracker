@@ -181,13 +181,9 @@ shinyServer(function(input, output, session) {
       cases_per_state <- cases_per_state_dec
     }
     
-    
     mexico$relative_n_cases <- relative_n_cases
     # Set NA to states with 0 cases in order to paint them as white
     mexico$relative_n_cases[relative_n_cases == 0] <- NA
-    
-    
-    # TODO: Enrich the map with other categories
     
     # Text for pop object at click selection 
     state_popup <- paste0("<strong>Estado: </strong>", 
