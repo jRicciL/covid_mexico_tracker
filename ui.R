@@ -22,7 +22,7 @@ shinyUI(
                # =========================================================================
                column(12,
                       class = 'col-xs-12 col-sm-12 col-md-6 col-lg-3 well',
-                      style = 'padding: 3rem',
+                      style = 'padding: 3rem;',
                       div(
                         h1(span('COVID-19:', class = 'red_color'), span('MxTracker', class='yellow_color')),
                         p(span('Última actualización:', style= 'font-weight: bold;'), span(last_date_formated)),
@@ -74,14 +74,19 @@ shinyUI(
                         
                       ),
                       hr(class='hr_main_light'),
-                      
+                      # Quedate en casa
+                      h2(a('#QuedateEnCasa', href='https://twitter.com/hashtag/quedatencasa', target='_blank',
+                           style='color: #58EBD7'), class='header'),
+                      br(),
                       # # ***** Disclaimer *****       
                       # fluidRow(
                       #   includeHTML('include_html/disclaimer.html')
                       # ), 
                       # ***** Footer *****
-                      HTML("
-  <p style = 'text-align: right;'>Author: <a href='https://github.com/jRicciL' target='_blank'>J. Ricci-López (2020) &copy;</a>, PhD student at <a href='https://www.cicese.edu.mx/' target='_blank'>CICESE</a>.<p/>
+                      HTML("<div class='header'>
+                      <p style = 'text-align: right;' class='header'><a href='https://github.com/jRicciL'  target='_blank'>J. Ricci-López (2020) &copy;</a>, PhD student at <a href='https://www.cicese.edu.mx/' target='_blank'>CICESE</a>.<p/>
+                      </div>
+  
               "),
               ),
                
@@ -222,10 +227,15 @@ shinyUI(
                       ),
                       
                       # *** DISCLAIMER ***
-                      div(h4('Dsiclaimer chevere', class='small', 
+                      div(
+                        h3('Los datos de esta aplicación son obtenidos a partir de los Comunicados Técnicos diários de la', 
+                           a('Secretaría de Salud, Mx', href="https://www.gob.mx/salud/documentos/informacion-internacional-y-nacional-sobre-nuevo-coronavirus-2019-ncov", target="_blank", style ="color: #FF7467;"), '. No obstante, pueden haber problemas de actualización o errores en el código de esta aplicación, por lo cual recuerda siempre verificar con a la información oficial.', class='small', 
                              style='font-weight: normal; text-align: right; margin: 0 4rem; color: #666450'),
-                          class='float-right')
+                          class='float-right'),
+                      hr(),
                       ),
+              
+                      
                
                # =================
                # Mexico Map
@@ -242,24 +252,24 @@ shinyUI(
                       hr(),
                       leafletOutput(
                         outputId = 'mapMx',
-                        height = "83%"
+                        height = "90%"
                       ),
                       
                       fluidRow(
-                        column(6,
-                               checkboxInput("normalizeCasesMap", 
-                                             label = h4("Casos por cada 100, 000 habitantes.",
-                                                        style='font-weight: normal; color: black; margin: 0.2rem 0;'), 
-                                             value = FALSE),
-                               
-                        ),
-                        column(6,
+                        # column(6,
+                        #        checkboxInput("normalizeCasesMap", 
+                        #                      label = h4("Casos por cada 100, 000 habitantes.",
+                        #                                 style='font-weight: normal; color: black; margin: 0.2rem 0;'), 
+                        #                      value = FALSE),
+                        #        
+                        # ),
+                        column(12,
                                p("normalizeCasesMap", style='color: #999;', class='small'),
                                style='text-align: right;'
                         ),
                       ),
                       class = "col-xs-12 col-sm-12 col-lg-6",
-                      style = "height: 580px; padding: 0 2em;",   
+                      style = "height: 580px; padding: 0 1.5em;",   
                ),
              ),
              hr(),
@@ -409,7 +419,7 @@ shinyUI(
                                    outputId = 'importCountry'
                                  ),
                                ),
-                               style = 'padding: 0 1rem;'
+                               style = 'padding: 0 1rem; min-height: 450px;'
                              )
                       ),
                ),
@@ -429,7 +439,8 @@ shinyUI(
                              column(12,
                                      dateInput(
                                        inputId = 'pickDate',
-                                       label = 'Selecciona la fecha:',
+                                       label = h4('Selecciona la fecha:',
+                                                style='font-weight: normal; color: black; margin: 0.2rem 0;'),
                                        value = last_date,
                                        format = "dd/mm/yy",
                                        language = 'es'

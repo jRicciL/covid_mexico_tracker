@@ -1,18 +1,17 @@
 body {
   background-color: #efeee1;
+  padding-top: 10px;
+  padding-left: 15px;
 }
 
 a {
-    color: #51D5F6;
+    color: #FF985D;
     text-decoration: none;
-    padding: 0px 4px;
 }
 
 a:hover {
-  color: black;
+  color: #FF7467;
   text-decoration: none;
-  background-color: #FFC27E;
-  border-radius: 5px;
 }
 
 .hr_main {
@@ -91,7 +90,7 @@ a:hover {
 }
 
 .yellow_color {
-  color: #E6C496;
+  color: #FFC27E;
 }
 
 .positive_bg_color {
