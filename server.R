@@ -225,7 +225,7 @@ shinyServer(function(input, output, session) {
     
     # Get from the first case reported?
     if(input$from_first_pos_case){
-      df_ <- df_[df_$Pos_rep >= DATE_FIRST_POS_CASE, ]
+      df_ <- df_[df_$Pos_rep >= 1, ]
     }
     
     pop_text <- paste0('<br><b>Casos ',  
@@ -238,13 +238,13 @@ shinyServer(function(input, output, session) {
     # Plot y-axis title
     yax_lp[['title']] <- paste0('<b>Número de Casos ', cum_or_new_cases_text(), ' </b>')
     # Creates the plot and add the Positive Cases
-    fig <- plot_ly(type = 'scatter', mode = 'markers+lines') %>%
+    fig <- plot_ly(type = 'scatter', mode = 'markers+lines', height = 500) %>%
            add_trace(x = df_$Fecha,
                      y = df_[['Pos_rep']],
-                     marker = list(size = 14,
+                     marker = list(size = 16,
                                    color = 'rgb(231, 87, 74)'),
                      line = list(color = 'rgb(231, 87, 74)',
-                                 width = 5),
+                                 width = 7),
                      text = paste0('<b>Positivos</b>',
                                    '<br><b>Casos ',  
                                    cum_or_new_cases_text(), ':</b> ', 
@@ -259,7 +259,7 @@ shinyServer(function(input, output, session) {
                        yend = max_y_value, 
                        showlegend = FALSE, opacity = 0.5,
                        line = list(color = 'black', dash = 'dash', 
-                                   linewidth = 3)) %>%
+                                   linewidth = 4)) %>%
           add_text(x = DATE_FIRST_POS_CASE,  
                    y = 0,
                    textposition = "up right",
@@ -295,12 +295,12 @@ shinyServer(function(input, output, session) {
                        cum_or_new_cases_text(), ':</b> ', df_[[column]],
                        '<br><b>Fecha:</b> ', df_$Fecha),
                      name = name_,
-                     marker = list(size = 10,
+                     marker = list(size = 11,
                                    symbol = 'diamond',
                                    color = color_),
                      line = list(color = color_,
                                  dash = 'dash',
-                                 width = 2),
+                                 width = 3),
                      hovertemplate = paste('%{text}')) 
     }
     
