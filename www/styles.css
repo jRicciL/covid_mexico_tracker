@@ -79,11 +79,11 @@ a:hover {
 }
 
 .suspect_bg_color {
-  background-color: #9EC67E;
+  background-color: #68c184;
 }
 
 .negative_bg_color {
-  background-color: #90BEBF;
+  background-color: #53b5ac;
 }
 
 .recovered_bg_color{
@@ -91,11 +91,11 @@ a:hover {
 }
 
 .death_bg_color {
-  background-color: #8C989B;
+  background-color: #9a8b9c;
 }
 
 .tested_bg_color{
-  background-color: #B497B9;
+  background-color: #ad754d;
 }
 
 /* Side bar styles*/
