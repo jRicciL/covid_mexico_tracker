@@ -15,6 +15,26 @@ a:hover {
   border-radius: 5px;
 }
 
+.hr_main {
+  border: 0;
+  height: 2px;
+  background: #617275;
+  background-image: -webkit-linear-gradient(left, #efeee1, #617275, #efeee1);
+  background-image: -moz-linear-gradient(left, #efeee1, #617275, #efeee1);
+  background-image: -ms-linear-gradient(left, #efeee1, #617275, #efeee1);
+  background-image: -o-linear-gradient(left, #efeee1, #617275, #efeee1);
+}
+
+.hr_main_light {
+  border: 0;
+  height: 1px;
+  background: #D4DADC;
+  background-image: -webkit-linear-gradient(left, #3b4344, #D4DADC, #3b4344);
+  background-image: -moz-linear-gradient(left, #3b4344, #D4DADC, #3b4344);
+  background-image: -ms-linear-gradient(left, #3b4344, #D4DADC, #3b4344);
+  background-image: -o-linear-gradient(left, #3b4344, #D4DADC, #3b4344);
+}
+
 .main_row_layout {
   margin: 1rem 1rem;
 }
