@@ -122,7 +122,7 @@ a:hover {
 
 .well {
   background-color: #3b4344;
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 .well > h1, p, label {
@@ -142,13 +142,20 @@ a:hover {
 /* Usability */
 .fade_white_color {
   color: #BBB;
+  
 }
 
 /* Inline iputs plots */
-.plot_input_labels > div > div > div > label> span {
+label.radio-inline > span,
+.plot_input_labels > div > div > div > label > span {
   color: #555;
   margin-left: 1rem;
 
+}
+
+.sideSecondary {
+  background-color: #dcdbce;
+  border-radius: 8px;
 }
 
 input#spoiler{
@@ -206,3 +213,4 @@ input#spoiler:checked + label + .spoiler{
     text-align: center;
   }
 }
+

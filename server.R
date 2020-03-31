@@ -238,7 +238,7 @@ shinyServer(function(input, output, session) {
     # Plot y-axis title
     yax_lp[['title']] <- paste0('<b>Número de Casos ', cum_or_new_cases_text(), ' </b>')
     # Creates the plot and add the Positive Cases
-    fig <- plot_ly(type = 'scatter', mode = 'markers+lines', height = 500) %>%
+    fig <- plot_ly(type = 'scatter', mode = 'markers+lines', height = 480) %>%
            add_trace(x = df_$Fecha,
                      y = df_[['Pos_rep']],
                      marker = list(size = 16,
