@@ -190,7 +190,7 @@ label.radio-inline > span,
 }
 
 .sec3-header {
-  margin-top: 100px;
+  margin-top: 60px;
 }
 
 input#spoiler{
@@ -247,6 +247,10 @@ input#spoiler:checked + label + .spoiler{
     margin: 0 auto;
     text-align: center;
   }
+  
+  .sec3-header {
+  margin-top: 0px;
+}
 }
 
 /* Footer */

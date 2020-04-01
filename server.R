@@ -405,8 +405,8 @@ shinyServer(function(input, output, session) {
   # *********** LINE PLOT: CASES PER STATE ***********
   output$statesTimePlot <- renderPlotly({
     df_ <- get_df_time_states()
-    
-    fig <- plot_ly(type = 'scatter', mode = 'markers+lines')
+    showLabels <- input$hideLabelsLineStates
+    fig <- plot_ly(type = 'scatter', mode = 'markers+lines', height = 480)
     for (column in colnames(df_)) {
       # Skip Fecha and Pos_rep
       if (column == 'Fecha') {
@@ -425,6 +425,7 @@ shinyServer(function(input, output, session) {
         y_ax_title <- '<b>Num. casos por Estado<br></b>'
       }
       
+  
       fig <- fig %>% 
         add_trace(x = df_$Fecha,
                   y =  y,
@@ -436,8 +437,8 @@ shinyServer(function(input, output, session) {
                     '<br><b>Fecha:</b> ', df_$Fecha),
                   name = column,
                   colors='Viridis',
-                  showlegend=FALSE,
-                  opacity=0.4,
+                  showlegend= showLabels,
+                  opacity=0.8,
                   line = list(
                     dash = 'solid',
                     width = 3),
@@ -446,7 +447,7 @@ shinyServer(function(input, output, session) {
     yx_lineStates <- yax_lp
     yx_lineStates[['title']] <- y_ax_title
     xx_lileStates <- ax_lp
-    xx_lileStates[['title']] <- '<b>Fecha</b> (desde el primer caso reportado.)'
+    xx_lileStates[['title']] <- '<b>Fecha</b><br>(desde el primer caso reportado.)'
     fig <- fig %>% layout(xaxis = xx_lileStates,  yaxis = yx_lineStates,
            colorway = brewer.pal(n = 11, name = "Spectral"),
            paper_bgcolor = 'rgba(0,0,0,0)',

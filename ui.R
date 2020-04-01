@@ -434,15 +434,32 @@ shinyUI(
                                    outputId = 'statesTimePlot'
                                  ),
                                ),
-                               div(
-                                 checkboxInput("normalizeCases", 
-                                               label = h4(span("Normalizar los casos:", style='font-weight: bold;'), 
-                                                               span("Casos por cada 100,000 habitantes"),
-                                                          style='font-weight: normal; color: black; margin: 0.2rem 0;'), 
-                                               value = FALSE),
-                                 style='padding-left: 80px;'
+                               br(),
+                               fluidRow(
+                                 style='margin-top: 4em;',
+                                 
+                                 column(6,
+                                        div(
+                                          checkboxInput("normalizeCases", 
+                                                        label = h4(span("Normalizar los casos:", style='font-weight: bold;'), 
+                                                                   span("Casos por cada 100,000 habitantes"),
+                                                                   style='font-weight: normal; color: black; margin: 0.2rem 0;'), 
+                                                        value = FALSE),
+                                          style='padding-left: 80px;'
+                                        ),
+                                 ),
+                                 column(6,
+                                   div(
+                                     checkboxInput("hideLabelsLineStates", 
+                                                   label = h4(span("Mostrar Nombres", style='font-weight: bold;'),
+                                                              style='font-weight: normal; color: black; margin: 0.2rem 0;'), 
+                                                   value = TRUE),
+                                     style='padding-left: 80px;'
+                                   ),
+                                 ),
                                ),
-                               style = 'padding: 0 1rem; min-height: 450px;'
+                               
+                               style = 'padding: 0 1rem;'
                              )
                       ),
                ),
@@ -497,6 +514,7 @@ shinyUI(
                                       class='col-xs-12 col-sm-6 col-lg-12', 
                                       style = 'padding: 0 2rem;', style='margin-top: 1rem;'
                                ),
+                               h4('Pendiente...')
                              ),
                              
                              # Complementary categories
