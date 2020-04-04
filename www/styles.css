@@ -220,38 +220,7 @@ input#spoiler:checked + label + .spoiler{
   opacity: 1;
   padding: 10px;
 }
-@media only screen and (max-width: 768px) {
-  .info_column_names {
-    text-align: center;
-  }
-  
-  .info_row_right{
-    text-align:right;
-  }
-  .icon_column{
-    text-align: left;
-  }
-  
-  .date_column {
-   text-align: center; 
-  }
 
-}
-
-@media only screen and (max-width: 992px) {
-  .numbers_panel{
-    padding: 0 5rem;
-  }  
-  
-  .header{
-    margin: 0 auto;
-    text-align: center;
-  }
-  
-  .sec3-header {
-  margin-top: 0px;
-}
-}
 
 /* Footer */
 
@@ -283,4 +252,55 @@ input#spoiler:checked + label + .spoiler{
 
 .footer > div > div > ul {
   text-align: left;
+}
+
+
+@media only screen and (max-width: 768px) {
+  .info_column_names {
+    text-align: center;
+  }
+  
+  .info_row_right{
+    text-align:right;
+  }
+  .icon_column{
+    text-align: left;
+  }
+  
+  .date_column {
+   text-align: center; 
+  }
+  
+  .sm_container {
+    padding: 0 0.2em;
+  }
+  
+  .container-fluid {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  
+  .col-footer {
+    padding: 0 0;
+  }
+  
+  .sideSecondary {
+    padding: 0em;
+  }
+
+}
+
+@media only screen and (max-width: 992px) {
+  .numbers_panel{
+    padding: 0 5rem;
+  }  
+  
+  .header{
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .sec3-header {
+  margin-top: 0px;
+}
 }

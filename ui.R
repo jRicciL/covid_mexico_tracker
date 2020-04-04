@@ -267,8 +267,8 @@ shinyUI(
                                style='text-align: right;'
                         ),
                       ),
-                      class = "col-xs-12 col-sm-12 col-lg-6",
-                      style = "height: 580px; padding: 0 1.5em;",   
+                      class = "col-xs-12 col-sm-12 col-lg-6 sm_container",
+                      style = "height: 580px;",   
                ),
              ),
              hr(),
@@ -300,8 +300,8 @@ shinyUI(
                                ),
                              )
                       ),
-                      class = 'col-xs-12  col-lg-9 col-lg-push-3',
-                      style = 'padding: 3rem; min-height: 620px;'
+                      class = 'col-xs-12  col-lg-9 col-lg-push-3 sm_container',
+                      style = 'min-height: 620px;'
                   ),
                
                column(12,
@@ -377,7 +377,7 @@ shinyUI(
                          span(textOutput('sec2_title_date', inline = TRUE), style='font-weight: normal'),
                          style = 'text-align: center;'),
                       hr(),
-                      column(12, class = 'col-sm-12 col-md-4 col-lg-4',
+                      column(12, class = 'col-sm-12 col-md-4 col-lg-4 sm-container',
                              h4(span('Distribución de Sexos:'),
                                 span('Casos positivos', style='font-weight: normal'), class='text-center'),
                              div(
@@ -386,7 +386,6 @@ shinyUI(
                                    outputId = 'pieSex'
                                  ),
                                ),
-                               style = 'padding: 0 1rem;'
                              )
                       ),
                       
@@ -473,7 +472,7 @@ shinyUI(
                       # =================   
                       column(12,
                              style='padding: 0 4rem',
-                             class = 'col-xs-12 col-sm-12 col-md-12',
+                             class = 'col-xs-12 col-sm-12 col-md-12 sm_container',
                              h3(icon('fas fa-info-circle'),
                                 'Información sobre los casos', style='font-weight: normal;', class='sec3-header'),
                              hr(class='hr_main_red'),
@@ -482,12 +481,12 @@ shinyUI(
                              column(12,
                                     actionButton(
                                       inputId = 'selState',
-                                      label = h4('Modificar fecha seleccionada',
+                                      label = h4('Modificar fecha',
                                                  style='font-weight: normal; color: black; margin: 0.2rem 0;'),
                                       onclick ="document.getElementById('pickDate').scrollIntoView();"
                                     ),
                                     class='col-xs-12 col-sm-6 col-lg-12', 
-                                    style = 'padding: 0 2rem;', style='margin-top: 1rem;'
+                                    style = 'padding: 0;', style='margin-top: 1rem;'
                              ),
                              br(),
                              br(),
