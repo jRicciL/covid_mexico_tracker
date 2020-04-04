@@ -56,7 +56,8 @@ preprocessing_data <- function() {
   last_date <- tail(raw_daily_data$Fecha, n = 1)[1]
   
   # Daily data per state
-  URL_DAILY <- paste0('https://raw.githubusercontent.com/carranco-sga/Mexico-COVID-19/master/Daily%20data/positivos_', gsub("-", "", last_date), '.csv')
+  formated_date <- gsub("-", "", last_date)
+  URL_DAILY <- paste0('https://raw.githubusercontent.com/carranco-sga/Mexico-COVID-19/master/Daily%20data/', substr(formated_date, 1, 6), '/positivos_', formated_date, '.csv')
   raw_daily_data <- read.csv(URL_DAILY, stringsAsFactors =  FALSE)
   
   # ******** Map Data ********
