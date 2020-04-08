@@ -5,7 +5,7 @@ html, body {
 }
 
 .container-fluid {
-  padding-top: 20px;
+  padding-top: 10px;
   padding-left: 25px;
 }
 
@@ -193,33 +193,6 @@ label.radio-inline > span,
   margin-top: 60px;
 }
 
-input#spoiler{
- display: none;
-}
-input#spoiler + label {
-  width: 200px;
-  padding: 0px 20px;
-  color: #fff;
-  font-size: 20px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-input#spoiler:checked + label {
-  color: #333;
-}
-input#spoiler ~ .spoiler {
-  width: 90%;
-  height: 0;
-  overflow: hidden;
-  opacity: 0;
-  margin: 10px auto 0; 
-  padding: 10px; 
-}
-input#spoiler:checked + label + .spoiler{
-  height: auto;
-  opacity: 1;
-  padding: 10px;
-}
 
 
 /* Footer */

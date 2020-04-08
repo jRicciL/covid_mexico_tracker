@@ -186,14 +186,16 @@ shinyServer(function(input, output, session) {
     mexico$relative_n_cases[relative_n_cases == 0] <- NA
     
     # Text for pop object at click selection 
-    state_popup <- paste0("<strong>Estado: </strong>", 
+    state_popup <- paste0("<div style='font-size: 1.1em;'>",
+                          "<strong>Estado: </strong>", 
                           mexico$names_corrected, 
-                          "<br><strong>Confirmados: </strong>", 
+                          "<br><strong style='color: #FF7467'>Confirmados: </strong>", 
                           mexico$cases_per_state_pos,
-                          "<br><strong>Sospechosos: </strong>", 
+                          "<br><strong style='color: #238943'>Sospechosos: </strong>", 
                           mexico$cases_per_state_sup,
-                          "<br><strong>Decesos: </strong>", 
-                          mexico$cases_per_state_dec)
+                          "<br><strong style='color: #6A4D6E'>Decesos: </strong>", 
+                          mexico$cases_per_state_dec,
+                          "</div>")
     
     # Create the Leaflet Map
     leaflet(data = mexico) %>%
@@ -202,7 +204,9 @@ shinyServer(function(input, output, session) {
                   fillOpacity = 0.8, 
                   color = "#444", 
                   weight = 1, 
-                  popup = state_popup)  %>%
+                  #label = lapply(state_popup, HTML)
+                  popup = state_popup
+                  )  %>%
       addLegend("bottomleft", 
                 pal = color_palette, 
                 values = cases_per_state,
