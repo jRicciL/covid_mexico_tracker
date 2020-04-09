@@ -191,10 +191,10 @@ shinyServer(function(input, output, session) {
                           mexico$names_corrected, 
                           "<br><strong style='color: #FF7467'>Confirmados: </strong>", 
                           mexico$cases_per_state_pos,
-                          "<br><strong style='color: #238943'>Sospechosos: </strong>", 
-                          mexico$cases_per_state_sup,
                           "<br><strong style='color: #6A4D6E'>Decesos: </strong>", 
                           mexico$cases_per_state_dec,
+                          "<br><strong style='color: #238943'>Sospechosos: </strong>", 
+                          mexico$cases_per_state_sup,
                           "</div>")
     
     # Create the Leaflet Map
@@ -245,10 +245,10 @@ shinyServer(function(input, output, session) {
     fig <- plot_ly(type = 'scatter', mode = 'markers+lines', height = 480) %>%
            add_trace(x = df_$Fecha,
                      y = df_[['Pos_rep']],
-                     marker = list(size = 16,
+                     marker = list(size = 12,
                                    color = 'rgb(231, 87, 74)'),
                      line = list(color = 'rgb(231, 87, 74)',
-                                 width = 7),
+                                 width = 5),
                      text = paste0('<b>Positivos</b>',
                                    '<br><b>Casos ',  
                                    cum_or_new_cases_text(), ':</b> ', 
@@ -299,12 +299,12 @@ shinyServer(function(input, output, session) {
                        cum_or_new_cases_text(), ':</b> ', df_[[column]],
                        '<br><b>Fecha:</b> ', df_$Fecha),
                      name = name_,
-                     marker = list(size = 11,
+                     marker = list(size = 9,
                                    symbol = 'diamond',
                                    color = color_),
                      line = list(color = color_,
                                  dash = 'dash',
-                                 width = 3),
+                                 width = 2),
                      hovertemplate = paste('%{text}')) 
     }
     
@@ -381,24 +381,24 @@ shinyServer(function(input, output, session) {
   })
   
   # *********** BAR PLOT: COUNTRY ORIGIN ***********
-  output$importCountry <- renderPlotly({
-    daily_data_info <- get_daily_data_info()
-    
-    ax_bar <- ax_lp
-    ay_bar <- yax_lp
-    ax_bar[['title']] <- '<b>Num. de casos</b>'
-    ay_bar[['title']] <- '<b>País</b>'
-    df_country_nat <- as.data.frame(table(daily_data_info['País_fuente']))
-    plot_ly(df_country_nat, y = ~Var1, x = ~Freq, type='bar', color = c('rgb(231, 87, 74)'),
-            name = 'Hombres', orientation = 'h', height = 380)  %>%
-      layout(xaxis = ax_bar,  yaxis = ay_bar,
-             paper_bgcolor = 'rgba(0,0,0,0)',
-             plot_bgcolor = 'rgba(241,239,218,1)') %>%
-      config(modeBarButtonsToRemove = modebar_plotly_conf,
-             displaylogo = FALSE,
-             displayModeBar = FALSE)
-    
-  })
+  # output$importCountry <- renderPlotly({
+  #   daily_data_info <- get_daily_data_info()
+  #   
+  #   ax_bar <- ax_lp
+  #   ay_bar <- yax_lp
+  #   ax_bar[['title']] <- '<b>Num. de casos</b>'
+  #   ay_bar[['title']] <- '<b>País</b>'
+  #   df_country_nat <- as.data.frame(table(daily_data_info['País_fuente']))
+  #   plot_ly(df_country_nat, y = ~Var1, x = ~Freq, type='bar', color = c('rgb(231, 87, 74)'),
+  #           name = 'Hombres', orientation = 'h', height = 380)  %>%
+  #     layout(xaxis = ax_bar,  yaxis = ay_bar,
+  #            paper_bgcolor = 'rgba(0,0,0,0)',
+  #            plot_bgcolor = 'rgba(241,239,218,1)') %>%
+  #     config(modeBarButtonsToRemove = modebar_plotly_conf,
+  #            displaylogo = FALSE,
+  #            displayModeBar = FALSE)
+  #   
+  # })
   
   get_df_time_states <- reactive({
     df_ <- df_pos_states
@@ -437,15 +437,15 @@ shinyServer(function(input, output, session) {
                     '<b>', column, '</b>',
                     '<br><b>Casos Totales',  
                     ':</b> ', df_[[column]],
-                    
+                    relative_cases,
                     '<br><b>Fecha:</b> ', df_$Fecha),
                   name = column,
                   colors='Viridis',
                   showlegend= showLabels,
-                  opacity=0.8,
+                  opacity=0.7,
                   line = list(
                     dash = 'solid',
-                    width = 3),
+                    width = 2),
                   hovertemplate = paste('%{text}')) 
     }
     yx_lineStates <- yax_lp

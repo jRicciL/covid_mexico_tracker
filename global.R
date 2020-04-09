@@ -6,7 +6,6 @@ library(shinythemes)
 library(plotly)
 library(leaflet)
 library(shinycssloaders)
-library(RColorBrewer)
 source('data/parser.R')
 
 # =========================================================================

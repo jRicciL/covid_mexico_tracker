@@ -23,7 +23,7 @@ shinyUI(
                column(12,
                       class = 'col-xs-12 col-sm-12 col-md-6 col-lg-3 well',
                       style = 'padding: 3rem;',
-                      div(
+                      div(style='font-size: 0.9em;',
                         h1(span('COVID-19:', class = 'red_color'), span('MxTracker', class='yellow_color')),
                         p(span('Última actualización:', style= 'font-weight: bold;'), span(last_date_formated)),
                         p(span('Fuente:', style='font-weight: bold;'),
@@ -62,8 +62,8 @@ shinyUI(
                                         inputId = 'mapData',
                                         label = 'Mostrar Casos:',
                                         choices = list("Positivos" = 'positivos', 
-                                                       "Sospechosos" = 'sospechosos',
-                                                       "Decesos" = 'decesos'), 
+                                                       "Decesos" = 'decesos',
+                                                       "Sospechosos" = 'sospechosos'), 
                                         selected = 'positivos'
                                       ),
                                       class = 'col-sm-8 col-md-8 col-lg-10'),
@@ -82,7 +82,7 @@ shinyUI(
                        
                       # ***** Footer *****
                       HTML("<div class='header'>
-                      <p style = 'text-align: right;' class='header'><a href='https://github.com/jRicciL'  target='_blank'>J. Ricci-López (2020) &copy;</a>, PhD student at <a href='https://www.cicese.edu.mx/' target='_blank'>CICESE</a>.<p/>
+                      <p style = 'text-align: right; font-size: 0.9em;' class='header'><a href='https://github.com/jRicciL'  target='_blank'>J. Ricci-López (2020) &copy;</a>, PhD student at <a href='https://www.cicese.edu.mx/' target='_blank'>CICESE</a>.<p/>
                       </div>
   
               "),
@@ -261,7 +261,11 @@ shinyUI(
                         #                      value = FALSE),
                         #        
                         # ),
-                        column(12,
+                        column(6,
+                              p('Da click sobre un estado para más información.',
+                                style='color: black; font-weight: bold;'),
+                        ),
+                        column(6,
                                p("GIS data map:", a('Kyle Walker', href='http://personal.tcu.edu/kylewalker/'),
                                  style='color: #999;', class='small'),
                                style='text-align: right;'
@@ -282,7 +286,7 @@ shinyUI(
                       # Time Line
                       # =================
                       column(12, class= 'col-lg-12',
-                             div(h3(span('Datos: ', 
+                             div(h3(span('Línea de Tiempo Nacional: ', 
                                          style='font-weight: bold;'),
                                     span('Número de casos',
                                          style = 'font-weight: normal;'),
@@ -312,14 +316,14 @@ shinyUI(
                                style='padding: 0 4rem',
                                class = 'col-xs-12 col-sm-12 col-md-12',
                                h3(icon("fas fa-clock"), 
-                                  'Línea de Tiempo', style='font-weight: normal; color: #333'),
+                                  'Datos Nacionales', style='font-weight: normal; color: #333'),
                                hr(class='hr_main_red'),
                                # From the first confirmed case
                                column(12,
                                       checkboxInput("from_first_pos_case", 
                                                     label = h4("A partir del primer caso positivo confirmado",
                                                                style='font-weight: bold; color: #444; margin: 0 1rem;'), 
-                                                    value = FALSE),
+                                                    value = TRUE),
                                       class='col-xs-12 col-sm-6 col-lg-12', 
                                       style = 'padding: 0 2rem;', style='margin-top: 1rem;'
                                ),
@@ -352,14 +356,14 @@ shinyUI(
                                                    label = h4("Selecciona la escala de visualización:",
                                                               style='font-weight: bold; color: #444; margin: 1rem 0;'), 
                                                    choices = list("Lineal" = 'raw', 
-                                                                  "Logarítmica" = 'log'),
+                                                                  "Logarítmica (log10)" = 'log'),
                                                    selected = 'raw', inline = F),
                                       class='col-xs-12 col-sm-6 col-lg-12 plot_input_labels', style='margin-top: 1rem;'
                                ),
                                
                           ),
                       class = 'col-xs-12 col-lg-3 col-lg-pull-9 sideSecondary',
-                      style = 'padding: 3rem'
+                      style = 'padding: 3rem; color: black;'
                     ),
 
              ),
@@ -377,7 +381,7 @@ shinyUI(
                          span(textOutput('sec2_title_date', inline = TRUE), style='font-weight: normal'),
                          style = 'text-align: center;'),
                       hr(),
-                      column(12, class = 'col-sm-12 col-md-4 col-lg-4 sm-container',
+                      column(12, class = 'col-sm-12 col-md-6 col-lg-6 sm-container',
                              h4(span('Distribución de Sexos:'),
                                 span('Casos positivos', style='font-weight: normal'), class='text-center'),
                              div(
@@ -389,7 +393,7 @@ shinyUI(
                              )
                       ),
                       
-                      column(12, class = 'col-sm-12 col-md-5 col-lg-5',
+                      column(12, class = 'col-sm-12 col-md-6 col-lg-6',
                              h4(span('Distribución de Edades:'),
                                 span('Casos positivos', style='font-weight: normal'), class='text-center'),
                              div(
@@ -411,56 +415,20 @@ shinyUI(
                              
                       ),
                       
-                      column(12, class = 'col-sm-12 col-md-3 col-lg-3',
-                             h4(span('País Fuente:'),
-                                span('Casos positivos', style='font-weight: normal'), class='text-center'),
-                             div(
-                               withSpinner(
-                                 plotlyOutput(
-                                   outputId = 'importCountry'
-                                 ),
-                               ),
-                               style = 'padding: 0 0;'
-                             )
-                      ),
+                      # column(12, class = 'col-sm-12 col-md-3 col-lg-3',
+                      #        h4(span('País Fuente:'),
+                      #           span('Casos positivos', style='font-weight: normal'), class='text-center'),
+                      #        div(
+                      #          withSpinner(
+                      #            plotlyOutput(
+                      #              outputId = 'importCountry'
+                      #            ),
+                      #          ),
+                      #          style = 'padding: 0 0;'
+                      #        )
+                      # ),
                       
-                      column(12, class = 'col-sm-12 col-md-12 col-lg-12',
-                             h3(span('Línea de Tiempo por Estado:'),
-                                span('Casos positivos', style='font-weight: normal'), class='text-center'),
-                             div(
-                               withSpinner(
-                                 plotlyOutput(
-                                   outputId = 'statesTimePlot'
-                                 ),
-                               ),
-                               br(),
-                               fluidRow(
-                                 style='margin-top: 4em;',
-                                 
-                                 column(6,
-                                        div(
-                                          checkboxInput("normalizeCases", 
-                                                        label = h4(span("Normalizar los casos:", style='font-weight: bold;'), 
-                                                                   span("Casos por cada 100,000 habitantes"),
-                                                                   style='font-weight: normal; color: black; margin: 0.2rem 0;'), 
-                                                        value = FALSE),
-                                          style='padding-left: 80px;'
-                                        ),
-                                 ),
-                                 column(6,
-                                   div(
-                                     checkboxInput("hideLabelsLineStates", 
-                                                   label = h4(span("Mostrar Nombres", style='font-weight: bold;'),
-                                                              style='font-weight: normal; color: black; margin: 0.2rem 0;'), 
-                                                   value = TRUE),
-                                     style='padding-left: 80px;'
-                                   ),
-                                 ),
-                               ),
-                               
-                               style = 'padding: 0 1rem;'
-                             )
-                      ),
+
                ),
                
                # =====================
@@ -525,6 +493,46 @@ shinyUI(
                       class = 'col-xs-12 col-lg-3 col-lg-pull-9 sideSecondary',
                       style = 'padding: 3rem'
                ),
+               
+               fluidRow(
+                                       column(12, class = 'col-sm-12 col-md-12 col-lg-12',
+                             h3(span('Línea de Tiempo por Estado:'),
+                                span('Casos positivos', style='font-weight: normal'), class='text-center'),
+                             div(
+                               withSpinner(
+                                 plotlyOutput(
+                                   outputId = 'statesTimePlot'
+                                 ),
+                               ),
+                               br(),
+                               fluidRow(
+                                 style='margin-top: 4em;',
+                                 
+                                 column(12,
+                                        div(
+                                          checkboxInput("normalizeCases", 
+                                                        label = h4(span("Normalizar los casos:", style='font-weight: bold;'), 
+                                                                   span("Casos por cada 100,000 habitantes"),
+                                                                   style='font-weight: normal; color: black; margin: 0.2rem 0;'), 
+                                                        value = FALSE),
+                                          style='padding-left: 80px;'
+                                        ),
+                                 ),
+                                 column(12,
+                                   div(
+                                     checkboxInput("hideLabelsLineStates", 
+                                                   label = h4(span("Mostrar Nombres de los estados", style='font-weight: bold;'),
+                                                              style='font-weight: normal; color: black; margin: 0.2rem 0;'), 
+                                                   value = TRUE),
+                                     style='padding-left: 80px;'
+                                   ),
+                                 ),
+                               ),
+                               
+                               style = 'padding: 0 1rem;'
+                             )
+                      ),
+               )
                
              ),
              
