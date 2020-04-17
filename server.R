@@ -411,11 +411,15 @@ shinyServer(function(input, output, session) {
     df_ <- get_df_time_states()
     showLabels <- input$hideLabelsLineStates
     fig <- plot_ly(type = 'scatter', mode = 'markers+lines', height = 480)
-    for (column in colnames(df_)) {
-      # Skip Fecha and Pos_rep
-      if (column == 'Fecha') {
-        next
-      } 
+    fecha <- df_$Fecha
+    df_$Fecha <- NULL
+    # orden por incidencia
+    order_by_n_cases <- order(tail(df_, 1), decreasing=TRUE)
+    columns <- colnames(df_)
+    columns <- columns[order_by_n_cases]
+    #print(tail(df_, 1))
+    for (column in columns) {
+      # Skip Fecha 
       
       if (input$normalizeCases) {
         # Dividir entre la población
@@ -429,18 +433,23 @@ shinyServer(function(input, output, session) {
         y_ax_title <- '<b>Num. casos por Estado<br></b>'
       }
       
+      if (column == 'Distrito Federal'){
+        name = 'CDMX'
+      } else {
+        name = column
+      }
   
       fig <- fig %>% 
-        add_trace(x = df_$Fecha,
+        add_trace(x = fecha,
                   y =  y,
                   text = paste0(
-                    '<b>', column, '</b>',
+                    '<b>', name, '</b>',
                     '<br><b>Casos Totales',  
                     ':</b> ', df_[[column]],
                     relative_cases,
                     '<br><b>Fecha:</b> ', df_$Fecha),
-                  name = column,
-                  colors='Viridis',
+                  name = name,
+                  colors='Spectral',
                   showlegend= showLabels,
                   opacity=0.7,
                   line = list(
@@ -451,9 +460,9 @@ shinyServer(function(input, output, session) {
     yx_lineStates <- yax_lp
     yx_lineStates[['title']] <- y_ax_title
     xx_lileStates <- ax_lp
-    xx_lileStates[['title']] <- '<b>Fecha</b><br>(desde el primer caso reportado.)'
+    xx_lileStates[['title']] <- '<b>Fecha</b><br>(desde el primer caso reportado)'
     fig <- fig %>% layout(xaxis = xx_lileStates,  yaxis = yx_lineStates,
-           colorway = brewer.pal(n = 11, name = "Spectral"),
+           colorway = spectral_palette,
            paper_bgcolor = 'rgba(0,0,0,0)',
            plot_bgcolor = 'rgba(241,239,218,1)') %>%
       config(modeBarButtonsToRemove = modebar_plotly_conf,

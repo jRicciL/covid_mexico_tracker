@@ -6,6 +6,7 @@ library(shinythemes)
 library(plotly)
 library(leaflet)
 library(shinycssloaders)
+library(shinyWidgets)
 source('data/parser.R')
 
 # =========================================================================
@@ -77,3 +78,9 @@ ax_lp <- list(marging = list(pad = 0), linecolor = 'rgb(0,0,0)',
               linewidth = 3, showline = T, title = '<b>Fecha</b>')
 yax_lp <- ax_lp
 
+spectral_palette <- c('#a70b44', '#af1446', '#b81e48', '#c1274a', '#c9314c', '#d43d4f',
+                      '#d9444d', '#de4c4b', '#e3534a', '#e85b48', '#ee6445', '#f36b43',
+                      '#f57547', '#f67f4b', '#f88950', '#fa9656', '#91d3a4', '#84cea5', 
+                      '#79c9a5', '#6ec5a5',
+                      '#64c0a6', '#5cb7aa', '#52abae', '#49a2b2', '#4199b6', '#3990ba',
+                      '#3387bc', '#3b7cb7', '#4273b3', '#496aaf', '#5061aa', '#5758a6')

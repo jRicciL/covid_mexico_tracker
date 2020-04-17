@@ -177,11 +177,11 @@ a:hover {
 }
 
 /* Inline iputs plots */
-label.radio-inline > span,
+label.radio-inline > span, .plot_input_labels > div > div > div > label,
 .plot_input_labels > div > div > div > label > span {
-  color: #555;
+  color: #222;
+  font-size: 1.1em;
   margin-left: 1rem;
-
 }
 
 .sideSecondary {
@@ -192,7 +192,6 @@ label.radio-inline > span,
 .sec3-header {
   margin-top: 60px;
 }
-
 
 
 /* Footer */
