@@ -4,7 +4,7 @@
 
 preprocessing_data <- function() {
   # Covid-19 daily reports from github
-  URL <- 'https://raw.githubusercontent.com/carranco-sga/Mexico-COVID-19/master/Mexico_COVID19.csv'
+  URL <- 'https://raw.githubusercontent.com/carranco-sga/Mexico-COVID-19/master/Mexico_COVID19_CTD.csv'
   raw_daily_data <- read.csv(URL, stringsAsFactors =  FALSE)
   
   
@@ -57,8 +57,18 @@ preprocessing_data <- function() {
   
   # Daily data per state
   formated_date <- gsub("-", "", last_date)
-  URL_DAILY <- paste0('https://raw.githubusercontent.com/carranco-sga/Mexico-COVID-19/master/Daily%20data/', substr(formated_date, 1, 6), '/positivos_', formated_date, '.csv')
-  raw_daily_data <- read.csv(URL_DAILY, stringsAsFactors =  FALSE)
+  month <- formated_date[1:6]
+  
+  raw_daily_data <- 
+    tryCatch({
+      URL_DAILY <- paste0('https://raw.githubusercontent.com/carranco-sga/Mexico-COVID-19/master/CTD/Scraped_data/',  substr(formated_date, 1, 6), '/positivos_', formated_date, '.csv')
+      read.csv(URL_DAILY, stringsAsFactors =  FALSE)
+    },
+    error = function(error_condition) {
+      URL_DAILY <- paste0('https://raw.githubusercontent.com/carranco-sga/Mexico-COVID-19/master/CTD/Scraped_data/',  substr(formated_date, 1, 6), '/positivos_', '20200418', '.csv')
+      read.csv(URL_DAILY, stringsAsFactors =  FALSE)
+    })
+    
   
   # ******** Map Data ********
   mexico <- data_list$mexico
