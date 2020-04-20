@@ -513,7 +513,7 @@ shinyUI(
                                  
                                  column(12,
                                         div(
-                                          checkboxInput("normalizeCases", 
+                                          awesomeCheckbox("normalizeCases", 
                                                         label = h4(span("Normalizar los casos:", style='font-weight: bold;'), 
                                                                    span("Casos por cada 100,000 habitantes"),
                                                                    style='font-weight: normal; color: black; margin: 0.2rem 0;'), 
@@ -523,7 +523,7 @@ shinyUI(
                                  ),
                                  column(12,
                                    div(
-                                     checkboxInput("hideLabelsLineStates", 
+                                     awesomeCheckbox("hideLabelsLineStates", 
                                                    label = h4(span("Mostrar Nombres de los estados", style='font-weight: bold;'),
                                                               style='font-weight: normal; color: black; margin: 0.2rem 0;'), 
                                                    value = TRUE),
