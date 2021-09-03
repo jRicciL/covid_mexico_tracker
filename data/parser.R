@@ -4,9 +4,10 @@
 
 preprocessing_data <- function() {
   # Covid-19 daily reports from github
-  URL <- 'https://raw.githubusercontent.com/carranco-sga/Mexico-COVID-19/master/Mexico_COVID19_CTD.csv'
+  URL <- './data/Mexico_COVID19.csv'
+  URL <- './data/Mexico_COVID19_CTD.csv'
   raw_daily_data <- read.csv(URL, stringsAsFactors =  FALSE)
-  
+  raw_daily_data <- raw_daily_data %>% filter(Fecha < "2020-04-18")
   
   # Mexico map preprocessed
   data_list <- readRDS('data/data.rds')
@@ -15,6 +16,7 @@ preprocessing_data <- function() {
   # Preprocessing main values: Positive, Recovered, Local, Imported and Deaths
   column_cases <- c('Fecha', 'Pos_rep', 'Susp_rep', 'Neg_rep', 'Recovered', 'Deceased', 'Tested_tot')
   df_total_reps <- raw_daily_data[, column_cases]
+  #df_total_reps <- df_total_reps %>% filter(Fecha < "2020-03-23")
   
   # ******** Daily Reports per State ********
   ord_state_names <- data_list$ord_state_names
@@ -65,7 +67,8 @@ preprocessing_data <- function() {
       read.csv(URL_DAILY, stringsAsFactors =  FALSE)
     },
     error = function(error_condition) {
-      URL_DAILY <- paste0('https://raw.githubusercontent.com/carranco-sga/Mexico-COVID-19/master/CTD/Scraped_data/',  substr(formated_date, 1, 6), '/positivos_', '20200418', '.csv')
+      URL_DAILY <- './data/positivos_20200418.csv'
+        # paste0('https://raw.githubusercontent.com/carranco-sga/Mexico-COVID-19/master/CTD/Scraped_data/',  substr(formated_date, 1, 6), '/positivos_', '20200418', '.csv')
       read.csv(URL_DAILY, stringsAsFactors =  FALSE)
     })
     
