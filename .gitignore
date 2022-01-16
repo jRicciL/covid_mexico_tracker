@@ -1,7 +1,9 @@
-.Rproj.user
-.Rhistory
-.RData
-.Ruserdata
+**.Rproj.user
+**.Rhistory
+**.RData
+**.Ruserdata
+**.DS_Store
+**.Rprofile
 .gitignore
 data/mexico.rds
 mexico.zip
