@@ -93,6 +93,7 @@ shinyUI(
                # =================
                column(12,
                       class = "col-xs-12 col-sm-12 col-md-6 col-lg-3 numbers_panel",
+                      style = 'padding: 0',
                       div(h3('Resumen nacional',
                              class = 'text-center'),
                           style = 'margin-bottom: 0px; z-index: 100'),

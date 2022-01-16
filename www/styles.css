@@ -83,6 +83,7 @@ a:hover {
 .info_column_names > h4{
   font-weight: normal;
   margin-top: 2px;
+  font-size: 17px !important;
 }
 
 .info_row_left{
@@ -96,6 +97,10 @@ a:hover {
 .icon_column{
   text-align: right;
 }
+
+.numbers_panel{
+  padding: 0;
+} 
 
 
 .icon{
@@ -263,9 +268,9 @@ label.radio-inline > span, .plot_input_labels > div > div > div > label,
 }
 
 @media only screen and (max-width: 992px) {
-  .numbers_panel{
-    padding: 0 5rem;
-  }  
+  /* .numbers_panel{
+    padding: 0 3rem;
+  }   */
   
   .header{
     margin: 0 auto;
