@@ -54,7 +54,12 @@ a:hover {
 }
 
 .main_row_layout {
-  margin: 1rem 1rem;
+  margin: 0;
+  padding: 0;
+}
+
+.main_content {
+  padding: 1em 3em 1em 3em;
 }
 
 .info_main_row{
@@ -170,10 +175,6 @@ a:hover {
   color: #FFC27E;;
 }
 
-/* shiny widgets */
-.shiny-options-group {
-  padding-left: 2rem;
-}
 
 /* Usability */
 .fade_white_color {
@@ -186,8 +187,8 @@ label.radio-inline > span, .plot_input_labels > div > div > div > label,
 .plot_input_labels > div > div > div > label > span {
   color: #222;
   font-size: 1.1em;
-  margin-left: 1rem;
 }
+
 
 .sideSecondary {
   background-color: #dad4b9;
@@ -196,6 +197,12 @@ label.radio-inline > span, .plot_input_labels > div > div > div > label,
 
 .sec3-header {
   margin-top: 60px;
+}
+
+/* Per state time line */
+#normalizeCases {
+  padding-left: 100px;
+  margin-left: 100px;
 }
 
 
@@ -229,6 +236,10 @@ label.radio-inline > span, .plot_input_labels > div > div > div > label,
 
 .footer > div > div > ul {
   text-align: left;
+}
+
+.footer-copyright {
+  margin: 2.5em 0 2em 0;
 }
 
 
