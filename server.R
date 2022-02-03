@@ -1,4 +1,9 @@
 shinyServer(function(input, output, session) {
+
+  observe({
+    shinyalert("¡Aviso!", 
+    "Esta es una aplicación de muestra con datos limitados únicamente a los primeros meses del año 2020. Para información actual sobre Covid-19 consulta los datos de la Secretaría de Salud, México.", type = "warning")
+  })
   
   # =========================================================================
   # Reactive Resources
@@ -356,9 +361,9 @@ shinyServer(function(input, output, session) {
     df_age_nat <- daily_data_info[, c('Edad', 'Sexo')]
     if (input$splitBySex) {
       hist <- plot_ly(df_age_nat, x = ~Edad, type='histogram', color=~Sexo, nbinsx = 10,
-                      text = ~Edad, height = 380,
+                      height = 380,
                       marker = list(colors = c('rgb(161, 198, 125)', 'rgb(102, 194, 165)'),
-                                    line = list(color = '#efeee1', width = 1)),
+                                    line = list(color = '#efeee1', width = 1)),          
                       name = ~Sexo)
     } else {
       hist <- plot_ly(df_age_nat, x = ~Edad, type='histogram',
