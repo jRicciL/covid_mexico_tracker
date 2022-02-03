@@ -7,6 +7,7 @@ library(plotly)
 library(leaflet)
 library(shinycssloaders)
 library(shinyWidgets)
+library(shinyalert)
 source('data/parser.R')
 
 # =========================================================================
