@@ -8,8 +8,9 @@ library(leaflet)
 library(shinycssloaders)
 library(shinyWidgets)
 library(shinyalert)
+library(languageserver)
 source('data/parser.R')
-
+Sys.setlocale(locale="es_ES.UTF-8")
 # =========================================================================
 # GET parsed data from parser.R script
 # =========================================================================
@@ -61,7 +62,10 @@ get_pal <- function(colors_str = "YlOrRd", n_bins = 6,  reverse = FALSE, max_tod
 # =========================================================================
 
 # ****** Spinner Options ******
-options(spinner.color="#FF7467", spinner.color.background="#ffffff", spinner.size=1.5)
+options(spinner.type = 2,
+        spinner.color="#FF7467", 
+        spinner.color.background="#F1EFDA", 
+        spinner.size= 0.8)
 
 # ****** Plotly configurations *****
 # Modebar conf
